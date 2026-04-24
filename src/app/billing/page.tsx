@@ -50,22 +50,10 @@ export default function BillingPage() {
     <div className="min-h-screen bg-[#111111] px-4 md:px-8 py-8 md:py-12 font-sans text-white">
       <div className="max-w-[1200px] lg:max-w-full mx-auto">
         
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <h1 className="text-[34px] md:text-4xl font-bold tracking-tight mb-2">Invoices & Billing</h1>
-            <p className="text-[#999] text-[15px]">View and download your past transaction history.</p>
-          </div>
-          
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-5 md:w-[280px] shadow-lg flex items-center gap-5">
-            <div className="w-12 h-12 rounded-full bg-[#FF7A00]/10 flex items-center justify-center shrink-0 border border-[#FF7A00]/20">
-              <span className="material-symbols-outlined text-[#FFB084] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>account_balance_wallet</span>
-            </div>
-            <div>
-              <p className="text-[11px] font-bold tracking-widest uppercase text-[#888] mb-1">Total Spent</p>
-              <p className="text-[26px] font-bold text-white tracking-tight leading-none">₹495.00</p>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="mb-8 md:mb-10">
+          <h1 className="text-2xl md:text-4xl text-white mb-2 font-serif tracking-wide">Transaction History</h1>
+          <p className="text-[#999] text-sm md:text-[15px] font-sans">View and download receipts for all your past purchases.</p>
         </div>
 
         {/* Transaction History Card */}
@@ -154,8 +142,8 @@ export default function BillingPage() {
         </div>
 
         {/* Payment Methods Section */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-6 shadow-lg hover:border-[#FF7A00]/20 transition-colors">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pb-12">
+          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-6 shadow-lg hover:border-[#FF7A00]/20 transition-colors md:col-span-2">
             <h3 className="text-[18px] font-bold mb-6 flex items-center gap-2">
               <span className="material-symbols-outlined text-[#FFB084] text-[20px]">credit_card</span>
               Payment Method
@@ -174,7 +162,29 @@ export default function BillingPage() {
             </div>
           </div>
 
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-6 shadow-lg hover:border-[#FF7A00]/20 transition-colors">
+          {/* Total Spent Card */}
+          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-5 md:p-6 shadow-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-[#3CE36A]/10 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[#3CE36A] text-[16px] md:text-[18px]">account_balance_wallet</span>
+              </div>
+              <span className="text-[#999] text-[11px] md:text-[13px] font-serif tracking-wider">Total Spent</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl text-white font-serif tracking-wider font-medium">₹4,995</h2>
+          </div>
+
+          {/* Courses Purchased Card */}
+          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-5 md:p-6 shadow-sm">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-[#8892FF]/10 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[#8892FF] text-[16px] md:text-[18px]">library_books</span>
+              </div>
+              <span className="text-[#999] text-[11px] md:text-[13px] font-serif tracking-wider">Courses Purchased</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl text-white font-serif tracking-wider font-medium">12</h2>
+          </div>
+
+          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-6 shadow-lg hover:border-[#FF7A00]/20 transition-colors md:col-span-2">
             <h3 className="text-[18px] font-bold mb-6 flex items-center gap-2">
               <span className="material-symbols-outlined text-[#FFB084] text-[20px]">mail</span>
               Billing Email

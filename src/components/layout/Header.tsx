@@ -19,8 +19,8 @@ export function Header() {
     >
       {/* Brand Logo */}
       <div className="flex items-center gap-2">
-        <Link href="/">
-          <Logo className="scale-90 origin-left" />
+        <Link href="/" className="flex items-center">
+          <Logo className="scale-75 md:scale-90 origin-left" />
         </Link>
       </div>
 
