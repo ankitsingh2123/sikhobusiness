@@ -63,9 +63,9 @@ export default function CartPage() {
       <div className="max-w-[1200px] lg:max-w-full mx-auto">
         
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Shopping Cart</h1>
-          <p className="text-[#888]">{items.length} Courses in Cart</p>
+        <div className="mb-8 md:mb-12">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2 tracking-tight">Shopping Cart</h1>
+          <p className="text-[#888] text-sm">{items.length} Courses in Cart</p>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-10">
@@ -85,11 +85,11 @@ export default function CartPage() {
                 {/* Content */}
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="flex justify-between items-start gap-4 mb-2">
-                      <h3 className="text-lg md:text-xl font-bold text-white group-hover:text-[#FF7A00] transition-colors">{item.title}</h3>
-                      <div className="text-right">
-                        <div className="text-xl font-bold text-[#FF7A00]">₹{item.discountPrice}</div>
-                        <div className="text-sm text-[#555] line-through">₹{item.price}</div>
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-2">
+                      <h3 className="text-base md:text-xl font-bold text-white group-hover:text-[#FF7A00] transition-colors line-clamp-2">{item.title}</h3>
+                      <div className="flex sm:flex-col items-baseline sm:items-end gap-2 shrink-0">
+                        <div className="text-lg md:text-xl font-bold text-[#FF7A00]">₹{item.discountPrice}</div>
+                        <div className="text-xs md:text-sm text-[#555] line-through">₹{item.price}</div>
                       </div>
                     </div>
                     <p className="text-sm text-[#888] mb-3">By <span className="text-white/80">{item.instructor}</span></p>
@@ -128,17 +128,17 @@ export default function CartPage() {
               <h2 className="text-xl font-bold mb-8">Order Summary</h2>
               
               <div className="space-y-4 mb-8">
-                <div className="flex justify-between text-[#888]">
+                <div className="flex justify-between text-[#888] text-sm">
                   <span>Original Price</span>
                   <span>₹{subtotal.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-[#FF7A00]">
+                <div className="flex justify-between text-[#FF7A00] text-sm font-medium">
                   <span>Course Discount</span>
                   <span>- ₹{totalDiscount.toLocaleString()}</span>
                 </div>
-                <div className="pt-4 border-t border-white/5 flex justify-between items-baseline">
-                  <span className="text-lg font-bold">Total</span>
-                  <span className="text-3xl font-bold text-white">₹{total.toLocaleString()}</span>
+                <div className="pt-4 border-t border-white/5 flex justify-between items-center">
+                  <span className="text-base font-bold">Total</span>
+                  <span className="text-2xl md:text-3xl font-bold text-white">₹{total.toLocaleString()}</span>
                 </div>
               </div>
 

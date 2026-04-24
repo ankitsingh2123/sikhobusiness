@@ -12,12 +12,18 @@ const categories = ["All", "NCERT", "Business", "History", "General Knowledge", 
 export default function SearchPage() {
   return (
     <div className="min-h-[calc(100vh-80px)] bg-[#131313] text-white flex flex-col lg:flex-row">
-      {/* Filters Sidebar */}
-      <aside className="w-full lg:w-[240px] flex-shrink-0 border-r border-white/5 p-6 lg:min-h-screen">
-        <div className="flex items-center gap-3 mb-8">
-          <span className="material-symbols-outlined">filter_list</span>
-          <h2 className="text-xl font-bold">Filters</h2>
+      {/* Filters Sidebar - Collapsible on Mobile */}
+      <aside className="w-full lg:w-[240px] flex-shrink-0 border-b lg:border-b-0 lg:border-r border-white/5 p-4 md:p-6">
+        <div className="flex items-center justify-between lg:mb-8">
+          <div className="flex items-center gap-3">
+            <span className="material-symbols-outlined text-[#FF7A00]">filter_list</span>
+            <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest text-gray-200">Filters</h2>
+          </div>
+          {/* Mobile indicator or toggle can go here if needed */}
         </div>
+        
+        {/* Horizontal scroll for filters on mobile, vertical on desktop */}
+        <div className="flex flex-row lg:flex-col gap-8 lg:gap-0 overflow-x-auto lg:overflow-visible hide-scrollbar py-4 lg:py-0">
 
         {/* Difficulty */}
         <div className="mb-8">
@@ -92,6 +98,7 @@ export default function SearchPage() {
             </div>
           </label>
         </div>
+        </div>
       </aside>
 
       {/* Main Content */}
@@ -111,9 +118,9 @@ export default function SearchPage() {
         </div>
 
         {/* Header */}
-        <div className="flex justify-between items-end mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">Explore Courses</h1>
-          <p className="text-gray-400 text-sm">Showing 24 results</p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Explore Courses</h1>
+          <p className="text-gray-500 text-xs md:text-sm font-medium">Showing 24 results</p>
         </div>
 
         {/* Grid */}
@@ -127,13 +134,13 @@ export default function SearchPage() {
                 FEATURED
               </div>
             </div>
-            <div className="p-6 md:p-8 flex-1 flex flex-col justify-between">
+            <div className="p-5 md:p-8 flex-1 flex flex-col justify-between">
               <div>
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-xl md:text-2xl font-bold leading-tight pr-4 group-hover:text-[#FF7A00] transition-colors">Advanced Business Strategy Masterclass</h3>
-                  <span className="text-[#3CE36A] font-bold text-xl">₹999</span>
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-4">
+                  <h3 className="text-xl md:text-2xl font-bold leading-tight group-hover:text-[#FF7A00] transition-colors">Advanced Business Strategy Masterclass</h3>
+                  <span className="text-[#3CE36A] font-bold text-lg md:text-2xl">₹999</span>
                 </div>
-                <p className="text-gray-400 text-sm mb-6 leading-relaxed line-clamp-3">
+                <p className="text-gray-400 text-sm mb-6 leading-relaxed line-clamp-2 md:line-clamp-3">
                   Learn advanced frameworks for corporate strategy, market analysis, and sustainable competitive advantage in today's fast-paced digital economy.
                 </p>
               </div>

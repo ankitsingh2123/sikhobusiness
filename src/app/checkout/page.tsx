@@ -19,12 +19,12 @@ export default function CheckoutPage() {
       <div className="max-w-[1200px] mx-auto">
 
         {/* Page Title */}
-        <div className="mb-10">
+        <div className="mb-8 md:mb-10">
           <div className="flex items-center gap-3 mb-2">
             <span className="material-symbols-outlined text-[20px] text-gray-500">lock</span>
-            <h1 className="text-3xl md:text-4xl font-bold">Secure Checkout</h1>
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight">Secure Checkout</h1>
           </div>
-          <p className="text-gray-400 text-base ml-9">Select your preferred payment method to complete the purchase.</p>
+          <p className="text-gray-400 text-sm md:text-base ml-9 leading-relaxed">Select your preferred payment method to complete the purchase.</p>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-10">
@@ -159,9 +159,9 @@ export default function CheckoutPage() {
                 {paymentMethod === "netbanking" && (
                   <div className="mt-5">
                     <label className="text-xs text-gray-500 font-medium uppercase tracking-wider block mb-3">Select Your Bank</label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {["SBI", "HDFC", "ICICI", "Axis"].map((bank) => (
-                        <button key={bank} className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 text-sm text-gray-300 hover:border-[#FF7A00]/50 hover:text-white transition-all">
+                        <button key={bank} className="bg-[#0A0A0A] border border-white/10 rounded-xl p-3 text-xs md:text-sm text-gray-300 hover:border-[#FF7A00]/50 hover:text-white transition-all">
                           {bank}
                         </button>
                       ))}
@@ -250,10 +250,10 @@ export default function CheckoutPage() {
               </div>
 
               {/* Total */}
-              <div className="px-8 pt-6 pb-2">
+              <div className="px-6 md:px-8 pt-6 pb-2">
                 <div className="flex items-baseline justify-between mb-1">
-                  <span className="text-xl font-bold">Total</span>
-                  <span className="text-4xl font-bold">₹{total}</span>
+                  <span className="text-lg md:text-xl font-bold">Total</span>
+                  <span className="text-3xl md:text-4xl font-bold">₹{total}</span>
                 </div>
                 <div className="text-right mb-8">
                   <span className="text-xs text-gray-500">Including all taxes</span>

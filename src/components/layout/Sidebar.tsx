@@ -96,24 +96,27 @@ export function Sidebar() {
           borderTop: "1px solid rgba(255,255,255,0.05)",
         }}
       >
-        {navItems.map((item) => {
+        {navItems.filter(item => ["Dashboard", "Search", "Library", "Cart"].includes(item.label)).concat({ icon: "person", label: "Account", href: "/account" }).map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className="flex flex-col items-center gap-1 py-1 px-3 transition-colors"
-              style={{ color: isActive ? "#FF7A00" : "#6b6b6b" }}
+              className="flex flex-col items-center gap-1 py-1 px-3 transition-all duration-200"
+              style={{ 
+                color: isActive ? "#FF7A00" : "#6b6b6b",
+                transform: isActive ? "scale(1.1)" : "scale(1)"
+              }}
             >
               <span
-                className="material-symbols-outlined text-[20px]"
+                className="material-symbols-outlined text-[22px]"
                 style={{
                   fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0",
                 }}
               >
                 {item.icon}
               </span>
-              <span className="text-[10px] font-medium">{item.label}</span>
+              <span className={`text-[9px] font-bold uppercase tracking-wider ${isActive ? "opacity-100" : "opacity-60"}`}>{item.label}</span>
             </Link>
           );
         })}

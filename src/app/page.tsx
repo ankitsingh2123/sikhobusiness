@@ -27,34 +27,34 @@ export default function HomePage() {
       className="min-h-screen text-[#222] pb-16"
       style={{ backgroundColor: "#F4F1EA", fontFamily: "Inter, sans-serif" }}
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 pt-8">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-10 pt-4 md:pt-8">
 
         {/* Continue Watching Section — Dark Card */}
-        <section className="bg-[#181818] rounded-3xl p-8 mb-12 relative overflow-hidden">
-          <div className="flex justify-between items-center mb-8">
+        <section className="bg-[#181818] rounded-2xl md:rounded-3xl p-5 md:p-8 mb-8 md:mb-12 relative overflow-hidden">
+          <div className="flex justify-between items-center mb-6 md:mb-8">
             <h2
-              className="text-white text-3xl font-bold tracking-tight"
+              className="text-white text-xl md:text-3xl font-bold tracking-tight"
               style={{ fontFamily: "Georgia, serif" }}
             >
               Continue watching
             </h2>
-            <button className="w-10 h-10 rounded-full bg-[#2A2A2A] hover:bg-[#3A3A3A] flex items-center justify-center transition-colors">
-              <span className="material-symbols-outlined text-white text-lg">chevron_right</span>
+            <button className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#2A2A2A] hover:bg-[#3A3A3A] flex items-center justify-center transition-colors">
+              <span className="material-symbols-outlined text-white text-base md:text-lg">chevron_right</span>
             </button>
           </div>
 
-          <div className="flex gap-8 overflow-x-auto hide-scrollbar pb-2">
+          <div className="flex gap-4 md:gap-8 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-2">
             {continueWatching.map((course, idx) => (
-              <Link href={`/courses/${course.slug}`} key={idx}>
-                <div className="flex gap-4 w-[280px] shrink-0 group cursor-pointer">
+              <Link href={`/courses/${course.slug}`} key={idx} className="snap-start first:pl-0">
+                <div className="flex gap-4 w-[260px] md:w-[320px] shrink-0 group cursor-pointer">
                   {/* Book Cover */}
                   <div
                     className={`w-28 h-40 rounded-lg bg-gradient-to-b ${course.gradient} relative p-3 flex flex-col justify-end shadow-md transition-transform group-hover:scale-105`}
                   >
-                    <span className="absolute top-3 left-3 bg-white/20 text-white text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wide">
+                    <span className="absolute top-2 left-2 md:top-3 md:left-3 bg-white/20 text-white text-[8px] md:text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wide">
                       {course.tag}
                     </span>
-                    <div>
+                    <div className="hidden md:block">
                       <h3
                         className="text-white font-bold text-sm leading-tight mb-1"
                         style={{ fontFamily: "Georgia, serif" }}
@@ -97,31 +97,31 @@ export default function HomePage() {
         <section>
           <div className="flex justify-between items-center mb-6">
             <h2
-              className="text-[#222] text-4xl font-bold tracking-tight"
+              className="text-[#222] text-2xl md:text-4xl font-bold tracking-tight"
               style={{ fontFamily: "Georgia, serif" }}
             >
               Library
             </h2>
-            <div className="flex items-center gap-4 text-[#666]">
-              <button className="flex items-center gap-1.5 text-sm hover:text-[#222]">
-                <span className="material-symbols-outlined text-[18px]">sort</span>
-                Sort by
+            <div className="flex items-center gap-2 md:gap-4 text-[#666]">
+              <button className="flex items-center gap-1 text-xs md:text-sm hover:text-[#222]">
+                <span className="material-symbols-outlined text-[16px] md:text-[18px]">sort</span>
+                Sort
               </button>
               <button className="hover:text-[#222]">
-                <span className="material-symbols-outlined text-[18px]">filter_list</span>
+                <span className="material-symbols-outlined text-[16px] md:text-[18px]">filter_list</span>
               </button>
               <button className="hover:text-[#222]">
-                <span className="material-symbols-outlined text-[18px]">more_vert</span>
+                <span className="material-symbols-outlined text-[16px] md:text-[18px]">more_vert</span>
               </button>
             </div>
           </div>
 
           {/* Categories — Light Pills */}
-          <div className="flex gap-3 mb-10 overflow-x-auto hide-scrollbar pb-2">
+          <div className="flex gap-3 mb-8 overflow-x-auto snap-x hide-scrollbar pb-2">
             {categories.map((cat, idx) => (
               <button
                 key={idx}
-                className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors shadow-sm ${
+                className={`px-4 md:px-5 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-medium whitespace-nowrap snap-start transition-colors shadow-sm ${
                   idx === 0
                     ? "bg-[#FF7A00] text-white"
                     : "bg-white text-[#444] hover:bg-gray-50"
@@ -139,12 +139,12 @@ export default function HomePage() {
                 <div className="flex gap-5 group cursor-pointer">
                   {/* Book Cover */}
                   <div
-                    className={`w-32 h-48 rounded-lg bg-gradient-to-b ${course.gradient} relative p-4 flex flex-col justify-end shadow-md transition-transform group-hover:scale-105`}
+                    className={`w-24 h-36 md:w-32 md:h-48 rounded-lg bg-gradient-to-b ${course.gradient} relative p-3 md:p-4 flex flex-col justify-end shadow-md transition-transform group-hover:scale-105`}
                   >
-                    <span className="absolute top-4 left-4 bg-white/20 text-white text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wide">
+                    <span className="absolute top-2 left-2 md:top-4 md:left-4 bg-white/20 text-white text-[8px] md:text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wide">
                       {course.tag}
                     </span>
-                    <div>
+                    <div className="hidden md:block">
                       <h3
                         className="text-white font-bold text-base leading-tight mb-1"
                         style={{ fontFamily: "Georgia, serif" }}
@@ -158,7 +158,7 @@ export default function HomePage() {
                   {/* Right Text */}
                   <div className="flex-1 pt-2">
                     <h3
-                      className="text-[#222] text-xl font-bold leading-tight mb-1.5 group-hover:text-[#FF7A00] transition-colors"
+                      className="text-[#222] text-base md:text-xl font-bold leading-tight mb-1 group-hover:text-[#FF7A00] transition-colors"
                       style={{ fontFamily: "Georgia, serif" }}
                     >
                       {course.title}

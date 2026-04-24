@@ -32,12 +32,12 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg"
                 style={{
                   background: "linear-gradient(135deg, #FF7A00, #ff9a3c)",
                 }}
               >
-                <span className="text-white font-bold text-sm">S</span>
+                <span className="text-white font-bold text-lg">S</span>
               </div>
               <span
                 className="font-semibold text-sm"
