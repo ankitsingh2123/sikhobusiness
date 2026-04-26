@@ -212,6 +212,15 @@ export function Header() {
                 All Categories
               </Link>
 
+              {/* Mobile Become Creator Icon */}
+              <Link 
+                href="/become-creator" 
+                className="md:hidden p-2 rounded-lg text-[#FF7A00] hover:bg-[#FF7A00]/10 transition-all active:scale-90"
+                title="Become Creator"
+              >
+                <span className="material-symbols-outlined text-[22px]">campaign</span>
+              </Link>
+
               {/* Mobile search Toggle */}
               <button
                 onClick={() => setIsMobileSearchOpen(true)}
