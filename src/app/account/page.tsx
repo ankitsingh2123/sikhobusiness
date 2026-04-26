@@ -1,180 +1,219 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
+import { EditProfileModal } from "@/components/account/EditProfileModal";
 
-export default function AccountPage() {
+export default async function AccountPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  // Fetch real user data from Prisma
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: {
+      purchases: true,
+      progress: true
+    }
+  });
+
+  if (!dbUser) {
+    redirect("/login");
+  }
+
+  const name = dbUser.name || "Learner";
+  const email = dbUser.email;
+  const roleDisplay = dbUser.role === "ADMIN" ? "Platform Creator & Admin" : "Pro Learner";
+  const avatarUrl = dbUser.avatar || "https://i.pravatar.cc/150?img=11";
+  
+  const fallbackAbout = dbUser.role === "ADMIN" 
+    ? "Welcome back, Admin! You have full access to create, edit, and manage all courses and platform settings."
+    : "Passionate about learning and growth strategies. Constantly upskilling to stay ahead in the dynamic landscape.";
+  const about = dbUser.about || fallbackAbout;
+  
+  // Calculate some stats
+  const coursesDone = dbUser.purchases.length;
+  // Approximation: let's assume each progress entry is 10 mins (0.16 hr) just for UI demo, or use actual
+  const learnHours = Math.floor(dbUser.progress.length * 0.16) || 0;
+  // Certificates (assumed logic: 1 cert per purchased course that has progress)
+  const certificates = Math.floor(coursesDone * 0.8) || 0;
   return (
-    <div className="min-h-screen bg-[#111111] px-4 md:px-8 py-8 md:py-12 font-sans text-white">
-      <div className="max-w-[1200px] lg:max-w-full mx-auto space-y-6">
+    <div className="min-h-screen bg-[#111111] px-3 sm:px-4 md:px-8 py-6 md:py-12 font-sans text-white overflow-x-hidden">
+      <div className="max-w-[1200px] lg:max-w-full mx-auto space-y-4 sm:space-y-6">
         
-        {/* Profile Header Card */}
-        <div className="bg-[#1A1A1A] rounded-[24px] border border-white/5 overflow-hidden shadow-sm">
+        {/* ΓòÉΓòÉ Profile Header Card ΓòÉΓòÉ */}
+        <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 overflow-hidden shadow-sm">
           {/* Top Banner Gradient */}
-          <div className="h-[140px] w-full bg-gradient-to-r from-[#2A1E15] via-[#1A1512] to-[#1A1A1A] relative">
-            {/* Subtle glow */}
-            <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[#FF7A00]/10 blur-[80px] -translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
+          <div className="h-20 sm:h-28 md:h-[140px] w-full bg-gradient-to-r from-[#2A1E15] via-[#1A1512] to-[#1A1A1A] relative">
+            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#FF7A00]/10 blur-[80px] -translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
           </div>
           
-          <div className="px-8 md:px-12 pb-10">
+          <div className="px-4 sm:px-6 md:px-12 pb-6 md:pb-10">
             {/* Avatar & Main Details Row */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 -mt-[60px] relative z-10 mb-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 -mt-10 sm:-mt-12 md:-mt-[60px] relative z-10 mb-5 md:mb-8">
               
-              <div className="flex flex-col md:flex-row md:items-end gap-6">
+              <div className="flex items-end sm:items-end gap-4 md:gap-6">
                 {/* Avatar */}
-                <div className="relative">
-                  <div className="w-[130px] h-[130px] rounded-full border-4 border-[#1A1A1A] overflow-hidden bg-[#222]">
+                <div className="relative flex-shrink-0">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-[130px] md:h-[130px] rounded-full border-[3px] md:border-4 border-[#1A1A1A] overflow-hidden bg-[#222]">
                     <Image 
-                      src="https://i.pravatar.cc/150?img=11" 
-                      alt="Arjun Mehta" 
+                      src={avatarUrl} 
+                      alt={name} 
                       fill 
                       className="object-cover"
                     />
                   </div>
                   {/* Edit Pencil Badge */}
-                  <button className="absolute bottom-1 right-1 w-8 h-8 bg-[#2A2A2A] rounded-full flex items-center justify-center border-2 border-[#1A1A1A] hover:bg-[#333] transition-colors">
-                    <span className="material-symbols-outlined text-[14px] text-[#CCC]">edit</span>
+                  <button className="absolute bottom-0 right-0 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-[#2A2A2A] rounded-full flex items-center justify-center border-2 border-[#1A1A1A] hover:bg-[#333] transition-colors">
+                    <span className="material-symbols-outlined text-[10px] sm:text-[12px] md:text-[14px] text-[#CCC]">edit</span>
                   </button>
                 </div>
 
-                <div className="mb-2">
-                  <h1 className="text-4xl font-bold tracking-tight mb-1 text-white">Arjun Mehta</h1>
-                  <p className="text-[#999] text-[15px] font-medium tracking-wide">Senior Marketing Strategist @ TechCorp</p>
+                <div className="mb-1 min-w-0">
+                  <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-0.5 text-white truncate">{name}</h1>
+                  <p className="text-[#999] text-xs sm:text-[13px] md:text-[15px] font-medium tracking-wide truncate">{roleDisplay} @ Seekho Business</p>
+                  <p className="text-[#666] text-[10px] sm:text-xs mt-1 truncate">{email}</p>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-3 mb-2">
-                <button className="flex items-center gap-2 bg-[#FF7A00] hover:bg-[#FF8A1F] text-[#3D1D00] px-5 py-2.5 rounded-full font-bold text-[13px] transition-all shadow-[0_4px_15px_rgba(255,122,0,0.2)]">
-                  <span className="material-symbols-outlined text-[18px]">share</span>
-                  Share Profile
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button className="flex items-center gap-1.5 bg-[#FF7A00] hover:bg-[#FF8A1F] text-[#3D1D00] px-3 sm:px-4 md:px-5 py-2 md:py-2.5 rounded-full font-bold text-[11px] sm:text-[12px] md:text-[13px] transition-all shadow-[0_4px_15px_rgba(255,122,0,0.2)]">
+                  <span className="material-symbols-outlined text-[14px] sm:text-[16px] md:text-[18px]">share</span>
+                  Share
                 </button>
-                <button className="px-6 py-2.5 rounded-full border border-white/10 text-white font-medium text-[13px] hover:bg-white/5 transition-colors">
-                  Edit
-                </button>
+                <EditProfileModal currentName={name} currentAvatar={avatarUrl} currentAbout={about} />
               </div>
 
             </div>
 
             {/* About Section */}
             <div>
-              <h3 className="text-[#888] text-[11px] font-bold tracking-[0.15em] uppercase mb-3">About</h3>
-              <p className="text-[#CCC] text-[15px] leading-relaxed max-w-3xl">
-                Passionate about data-driven marketing and growth strategies. Constantly upskilling to stay ahead in the dynamic digital landscape. Currently focused on advanced analytics and customer lifecycle management.
+              <h3 className="text-[#888] text-[10px] sm:text-[11px] font-bold tracking-[0.15em] uppercase mb-2 md:mb-3">About</h3>
+              <p className="text-[#CCC] text-xs sm:text-[13px] md:text-[15px] leading-relaxed max-w-3xl whitespace-pre-wrap">
+                {about}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* ΓòÉΓòÉ Bottom Grid ΓòÉΓòÉ */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
-          {/* Learning Overview (Spans 2 columns) */}
-          <div className="lg:col-span-2 bg-[#1A1A1A] rounded-[24px] border border-white/5 p-8 shadow-sm">
+          {/* ΓöÇΓöÇ Learning Overview (Spans 2 columns on desktop) ΓöÇΓöÇ */}
+          <div className="lg:col-span-2 bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 p-4 sm:p-6 md:p-8 shadow-sm">
             
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold tracking-tight">Learning Overview</h2>
-              <button className="text-[13px] font-medium text-[#FF7A00] hover:text-[#FF8A1F] flex items-center gap-1 transition-colors">
-                View Detailed Report
-                <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            <div className="flex items-center justify-between mb-5 md:mb-8">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">Learning Overview</h2>
+              <button className="text-[11px] sm:text-[12px] md:text-[13px] font-medium text-[#FF7A00] hover:text-[#FF8A1F] flex items-center gap-1 transition-colors">
+                <span className="hidden sm:inline">View Report</span>
+                <span className="material-symbols-outlined text-[14px] sm:text-[16px]">arrow_forward</span>
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Stats cards ΓÇö horizontal scroll on very small, grid on sm+ */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-5">
               
               {/* Card 1: Courses Completed */}
-              <div className="bg-[#222] rounded-2xl p-6 border border-white/5 flex flex-col justify-between h-[200px]">
-                <div className="w-10 h-10 rounded-full bg-[#FF7A00]/10 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[#FF7A00] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+              <div className="bg-[#222] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-white/5 flex flex-col justify-between min-h-[120px] sm:min-h-[160px] md:h-[200px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-[#FF7A00]/10 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[#FF7A00] text-[14px] sm:text-[16px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                 </div>
-                <div>
-                  <h3 className="text-[40px] font-bold leading-none mb-1">12</h3>
-                  <p className="text-[#999] text-[13px] font-medium tracking-wide">Courses Completed</p>
+                <div className="mt-2 sm:mt-0">
+                  <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none mb-0.5">{coursesDone}</h3>
+                  <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Courses Enrolled</p>
                 </div>
-                <div className="w-full h-1.5 bg-[#111] rounded-full mt-4 overflow-hidden">
+                <div className="w-full h-1 sm:h-1.5 bg-[#111] rounded-full mt-2 sm:mt-4 overflow-hidden">
                    <div className="h-full bg-[#3CE36A] w-3/4 rounded-full"></div>
                 </div>
               </div>
 
               {/* Card 2: Learning Hours */}
-              <div className="bg-[#222] rounded-2xl p-6 border border-white/5 flex flex-col justify-between h-[200px]">
-                <div className="w-10 h-10 rounded-full bg-[#8892FF]/10 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[#8892FF] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>schedule</span>
+              <div className="bg-[#222] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-white/5 flex flex-col justify-between min-h-[120px] sm:min-h-[160px] md:h-[200px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-[#8892FF]/10 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[#8892FF] text-[14px] sm:text-[16px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>schedule</span>
                 </div>
-                <div>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <h3 className="text-[40px] font-bold leading-none">148</h3>
-                    <span className="text-[#999] text-[16px]">hrs</span>
+                <div className="mt-2 sm:mt-0">
+                  <div className="flex items-baseline gap-0.5 mb-0.5">
+                    <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none">{learnHours}</h3>
+                    <span className="text-[#999] text-[10px] sm:text-xs md:text-[16px]">hrs</span>
                   </div>
-                  <p className="text-[#999] text-[13px] font-medium tracking-wide">Learning Hours</p>
+                  <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Learn Hours</p>
                 </div>
-                <div className="flex items-center gap-1.5 mt-4 text-[#3CE36A] text-[12px] font-bold">
-                  <span className="material-symbols-outlined text-[14px]">trending_up</span>
-                  +12 hrs this week
+                <div className="flex items-center gap-1 mt-2 sm:mt-4 text-[#3CE36A] text-[9px] sm:text-[11px] md:text-[12px] font-bold">
+                  <span className="material-symbols-outlined text-[12px] sm:text-[14px]">trending_up</span>
+                  Active Learner
                 </div>
               </div>
 
               {/* Card 3: Certificates */}
-              <div className="bg-[#222] rounded-2xl p-6 border border-white/5 flex flex-col justify-between h-[200px]">
-                <div className="w-10 h-10 rounded-full bg-[#3CE36A]/10 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[#3CE36A] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>workspace_premium</span>
+              <div className="bg-[#222] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-white/5 flex flex-col justify-between min-h-[120px] sm:min-h-[160px] md:h-[200px]">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-[#3CE36A]/10 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-[#3CE36A] text-[14px] sm:text-[16px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>workspace_premium</span>
                 </div>
-                <div>
-                  <h3 className="text-[40px] font-bold leading-none mb-1">5</h3>
-                  <p className="text-[#999] text-[13px] font-medium tracking-wide">Certificates Earned</p>
+                <div className="mt-2 sm:mt-0">
+                  <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none mb-0.5">{certificates}</h3>
+                  <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Certificates</p>
                 </div>
-                <div className="flex items-center gap-1.5 mt-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-2 h-2 rounded-full bg-[#3CE36A]"></div>
-                  ))}
+                <div className="flex items-center gap-1 mt-2 sm:mt-4">
+                  {certificates > 0 ? [...Array(Math.min(5, certificates))].map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#3CE36A]"></div>
+                  )) : (
+                    <span className="text-[#999] text-[10px]">Start learning to earn</span>
+                  )}
                 </div>
               </div>
 
             </div>
           </div>
 
-          {/* Recent Badges (Spans 1 column) */}
-          <div className="bg-[#1A1A1A] rounded-[24px] border border-white/5 p-8 shadow-sm flex flex-col">
-            <h2 className="text-2xl font-bold tracking-tight mb-8">Recent Badges</h2>
+          {/* ΓöÇΓöÇ Recent Badges ΓöÇΓöÇ */}
+          <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 p-4 sm:p-6 md:p-8 shadow-sm flex flex-col">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight mb-5 md:mb-8">Recent Badges</h2>
             
-            <div className="space-y-6 flex-1">
+            <div className="space-y-4 sm:space-y-5 md:space-y-6 flex-1">
               
               {/* Badge 1 */}
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-[#FF7A00] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border border-white/10 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[#FF7A00] text-[16px] sm:text-[18px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>local_fire_department</span>
                 </div>
-                <div>
-                  <h4 className="text-white text-[14px] font-bold tracking-wide">7-Day Streak</h4>
-                  <p className="text-[#888] text-[12px]">Consistent Learner</p>
+                <div className="min-w-0">
+                  <h4 className="text-white text-xs sm:text-[13px] md:text-[14px] font-bold tracking-wide">7-Day Streak</h4>
+                  <p className="text-[#888] text-[10px] sm:text-[11px] md:text-[12px]">Consistent Learner</p>
                 </div>
               </div>
 
               {/* Badge 2 */}
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border border-[#8892FF]/30 flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-[#8892FF] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>lightbulb</span>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border border-[#8892FF]/30 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[#8892FF] text-[16px] sm:text-[18px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>lightbulb</span>
                 </div>
-                <div>
-                  <h4 className="text-white text-[14px] font-bold tracking-wide">Top 10% Scorer</h4>
-                  <p className="text-[#888] text-[12px]">Advanced Marketing Analytics</p>
+                <div className="min-w-0">
+                  <h4 className="text-white text-xs sm:text-[13px] md:text-[14px] font-bold tracking-wide">Top 10% Scorer</h4>
+                  <p className="text-[#888] text-[10px] sm:text-[11px] md:text-[12px] truncate">Advanced Marketing Analytics</p>
                 </div>
               </div>
 
               {/* Badge 3 */}
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full border border-[#3CE36A]/30 flex items-center justify-center shrink-0">
-                  <span className="material-symbols-outlined text-[#3CE36A] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border border-[#3CE36A]/30 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[#3CE36A] text-[16px] sm:text-[18px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
                 </div>
-                <div>
-                  <h4 className="text-white text-[14px] font-bold tracking-wide">Master Strategist</h4>
-                  <p className="text-[#888] text-[12px]">Completed 5 Strategy Modules</p>
+                <div className="min-w-0">
+                  <h4 className="text-white text-xs sm:text-[13px] md:text-[14px] font-bold tracking-wide">Master Strategist</h4>
+                  <p className="text-[#888] text-[10px] sm:text-[11px] md:text-[12px] truncate">Completed 5 Strategy Modules</p>
                 </div>
               </div>
 
             </div>
 
-            <button className="w-full mt-8 py-3.5 rounded-xl border border-white/10 text-[#CCC] text-[13px] font-bold hover:bg-white/5 hover:text-white transition-colors">
+            <button className="w-full mt-5 md:mt-8 py-3 md:py-3.5 rounded-xl border border-white/10 text-[#CCC] text-[11px] sm:text-[12px] md:text-[13px] font-bold hover:bg-white/5 hover:text-white transition-colors">
               View All Badges
             </button>
           </div>

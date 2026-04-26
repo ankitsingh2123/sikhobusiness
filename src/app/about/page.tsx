@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Us — Our Mission to Make Learning Accessible",
+  title: "About Us ΓÇö Our Mission to Make Learning Accessible",
   description:
     "Seekho Business is India's leading video learning platform. We break down best-selling business books and NCERT chapters into affordable, easy-to-understand video courses in Hindi.",
   alternates: {
@@ -14,7 +14,7 @@ const stats = [
   { value: "50+", label: "Video Courses" },
   { value: "3,500+", label: "Video Lessons" },
   { value: "50K+", label: "Students" },
-  { value: "₹99", label: "Per Course" },
+  { value: "Γé╣99", label: "Per Course" },
 ];
 
 const team = [
@@ -64,7 +64,7 @@ export default function AboutPage() {
               <span className="text-sb-brand"> accessible</span> to every Indian student
             </h1>
             <p className="text-lg leading-relaxed max-md:text-base mb-8 text-sb-text-secondary">
-              We believe that understanding business, finance, and science shouldn&apos;t be limited by language or price. Seekho Business breaks down the world&apos;s best books and NCERT chapters into engaging Hindi video courses — available for just ₹99 each.
+              We believe that understanding business, finance, and science shouldn&apos;t be limited by language or price. Seekho Business breaks down the world&apos;s best books and NCERT chapters into engaging Hindi video courses ΓÇö available for just Γé╣99 each.
             </p>
             <div className="flex gap-4 flex-wrap">
               <Link href="/courses" className="bg-sb-brand text-[#5C2800] font-semibold text-sm py-3 px-6 rounded-xl border-none cursor-pointer transition-all duration-200 inline-flex items-center justify-center gap-2 hover:bg-[#ff8f1f] hover:-translate-y-0.5 hover:shadow-[0_4px_20px_rgba(255,122,0,0.3)] active:translate-y-0">
@@ -113,7 +113,7 @@ export default function AboutPage() {
                   India has over 600 million people under 25. Most of them study in Hindi. Yet the best business and self-help content is only available in English.
                 </p>
                 <p className="text-base leading-relaxed text-sb-text-secondary">
-                  We&apos;re changing that. Our team creates detailed, high-quality video courses from the world&apos;s bestselling books — all in Hindi, all affordable, and all designed for the Indian learner.
+                  We&apos;re changing that. Our team creates detailed, high-quality video courses from the world&apos;s bestselling books ΓÇö all in Hindi, all affordable, and all designed for the Indian learner.
                 </p>
               </div>
               <div>
@@ -122,10 +122,10 @@ export default function AboutPage() {
                 </h2>
                 <ul className="space-y-4">
                   {[
-                    { icon: "movie", text: "70+ videos per book — not just summaries" },
+                    { icon: "movie", text: "70+ videos per book ΓÇö not just summaries" },
                     { icon: "language", text: "Everything in simple Hindi" },
-                    { icon: "currency_rupee", text: "Just ₹99 per course — no subscriptions" },
-                    { icon: "download", text: "Secure offline viewing — learn anywhere" },
+                    { icon: "currency_rupee", text: "Just Γé╣99 per course ΓÇö no subscriptions" },
+                    { icon: "download", text: "Secure offline viewing ΓÇö learn anywhere" },
                     { icon: "school", text: "NCERT chapters + Business books" },
                   ].map((item) => (
                     <li key={item.text} className="flex items-start gap-3">

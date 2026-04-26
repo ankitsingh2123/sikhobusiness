@@ -13,9 +13,24 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const isWatchPage = pathname?.startsWith("/watch");
   const isCheckoutSuccess = pathname === "/checkout/success";
 
-  if (isWatchPage || isCheckoutSuccess || isForgotPassword) {
+  // Watch page: show Sidebar and Header, but no footer for immersive experience
+  if (isWatchPage) {
     return (
-      <div className="min-h-screen bg-[#111111] flex items-center justify-center">
+      <div className="flex min-h-screen bg-[#111111]">
+        <Sidebar />
+        <div className="flex-1 flex flex-col min-h-screen min-w-0 md:ml-20">
+          <Header />
+          <main className="flex-1 flex flex-col min-w-0">
+            {children}
+          </main>
+        </div>
+      </div>
+    );
+  }
+
+  if (isCheckoutSuccess || isForgotPassword) {
+    return (
+      <div className="min-h-screen bg-[#111111]">
         {children}
       </div>
     );
@@ -24,9 +39,9 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-[#0A0A0A]">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-h-screen md:ml-20">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0 md:ml-20">
         <Header />
-        <main className="flex-1 flex flex-col">
+        <main className="flex-1 flex flex-col min-w-0">
           {children}
         </main>
         {/* Only hide footer on auth pages if they are meant to be full-screen forms */}
