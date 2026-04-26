@@ -197,7 +197,7 @@ export default async function HomePage({
               </button>
             </div>
             <div className="flex gap-3 md:gap-6 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
-              {allCourses.slice(0, 4).map((course: any, idx: number) => (
+              {libraryCourses.slice(0, 4).map((course: any, idx: number) => (
                 <Link
                   key={course.id}
                   href={`/courses/${course.id}`}
