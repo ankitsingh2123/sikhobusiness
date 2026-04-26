@@ -22,8 +22,17 @@ model User {
   email     String   @unique
   name      String?
   avatar    String?  // Supabase bucket se image ka URL aayega
-  about     String?  // User ka short bio / description
-  role      Role     @default(STUDENT)
+  about       String?  // User ka short bio / description
+  phone       String?  // Contact Number
+  address     String?  // Creator Address
+  legalName   String?  // Official Name for Payments
+  instagram   String?  // Social Link
+  youtube     String?  // Social Link
+  category    String?  // Teaching Category
+  experience  String?  // Years of Experience
+  upiId       String?  // Creator payout UPI
+  bankAccount String?  // Creator payout Bank Account details
+  role        Role     @default(STUDENT)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

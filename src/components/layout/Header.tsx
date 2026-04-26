@@ -194,10 +194,19 @@ export function Header() {
 
             {/* Right: Actions */}
             <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              {/* All Categories Button (Right Side) */}
+              {/* Become Creator Button */}
+              <Link 
+                href="/become-creator" 
+                className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#FF7A00]/10 to-[#FF7A00]/5 border border-[#FF7A00]/30 hover:border-[#FF7A00] transition-all text-sm font-bold text-[#FF7A00]"
+              >
+                <span className="material-symbols-outlined text-[18px]">campaign</span>
+                Become Creator
+              </Link>
+
+              {/* All Categories Button */}
               <Link 
                 href="/courses" 
-                className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all text-sm font-medium text-white mr-1"
+                className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all text-sm font-medium text-white mr-1"
               >
                 <span className="material-symbols-outlined text-[18px]">grid_view</span>
                 All Categories
