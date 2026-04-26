@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -68,7 +68,7 @@ export default function CheckoutSuccessPage() {
             
             <div className="flex justify-between items-center">
               <span className="text-[#888] text-[14px] font-medium">Total Amount</span>
-              <span className="text-[#3CE36A] text-[16px] font-bold tracking-wide">₹99.00</span>
+              <span className="text-[#3CE36A] text-[16px] font-bold tracking-wide">Γé╣99.00</span>
             </div>
           </div>
         </div>

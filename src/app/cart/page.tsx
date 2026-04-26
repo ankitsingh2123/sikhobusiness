@@ -1,44 +1,61 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-const initialItems = [
-  {
-    id: 1,
-    title: "Advanced Digital Marketing Strategy",
-    instructor: "Sarah Jenkins",
-    price: 4999,
-    discountPrice: 499,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-    rating: 4.8,
-    reviews: 1240,
-    category: "Marketing"
-  },
-  {
-    id: 2,
-    title: "Financial Modeling & Valuation Masterclass",
-    instructor: "Robert Chen",
-    price: 2999,
-    discountPrice: 199,
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=80",
-    rating: 4.9,
-    reviews: 856,
-    category: "Finance"
-  }
-];
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  const removeItem = (id: number) => {
-    setItems(items.filter(item => item.id !== id));
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const fetchCart = async () => {
+    try {
+      const res = await fetch("/api/cart");
+      if (res.status === 401) {
+        router.push("/auth/login");
+        return;
+      }
+      if (res.ok) {
+        const data = await res.json();
+        setItems(data);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const subtotal = items.reduce((acc, item) => acc + item.price, 0);
-  const totalDiscount = items.reduce((acc, item) => acc + (item.price - item.discountPrice), 0);
-  const total = subtotal - totalDiscount;
+  const removeItem = async (id: string) => {
+    try {
+      setItems(items.filter(item => item.id !== id)); // Optimistic UI update
+      const res = await fetch(`/api/cart?id=${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        fetchCart(); // Revert if failed
+      }
+    } catch (e) {
+      console.error(e);
+      fetchCart();
+    }
+  };
+
+  const subtotal = items.reduce((acc, item) => acc + (item.course.price * 20), 0); // Assuming 20x discount ratio for display
+  const total = items.reduce((acc, item) => acc + item.course.price, 0);
+  const totalDiscount = subtotal - total;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#111111] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#FF7A00] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -49,7 +66,7 @@ export default function CartPage() {
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4">Your cart is empty</h1>
         <p className="text-[#888] text-sm mb-8 sm:mb-10 max-w-md">Looks like you haven&apos;t added anything yet. Explore our top courses and start learning!</p>
         <Link 
-          href="/search" 
+          href="/" 
           className="bg-[#FF7A00] text-black font-bold px-8 py-3.5 rounded-xl hover:bg-[#FF8A1F] transition-all shadow-lg shadow-[#FF7A00]/20 text-sm sm:text-base"
         >
           Browse Courses
@@ -70,7 +87,7 @@ export default function CartPage() {
 
         <div className="flex flex-col xl:flex-row gap-6 md:gap-10">
           
-          {/* ── Item List ── */}
+          {/* ΓöÇΓöÇ Item List ΓöÇΓöÇ */}
           <div className="flex-1 space-y-3 sm:space-y-4 md:space-y-6 min-w-0">
             {items.map((item) => (
               <div 
@@ -79,9 +96,9 @@ export default function CartPage() {
               >
                 {/* Mobile: stacked layout */}
                 <div className="flex gap-3 sm:gap-4 md:gap-6">
-                  {/* Thumbnail — small on mobile, larger on desktop */}
+                  {/* Thumbnail ΓÇö small on mobile, larger on desktop */}
                   <div className="relative w-20 h-20 sm:w-28 sm:h-24 md:w-48 md:h-32 rounded-xl md:rounded-2xl overflow-hidden shrink-0 border border-white/5">
-                    <Image src={item.image} alt={item.title} fill className="object-cover" />
+                    <Image src={item.course.thumbnail || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80"} alt={item.course.title} fill className="object-cover" />
                   </div>
 
                   {/* Content */}
@@ -89,30 +106,30 @@ export default function CartPage() {
                     <div>
                       {/* Title + Price row */}
                       <div className="flex justify-between items-start gap-2 mb-1">
-                        <h3 className="text-sm sm:text-base md:text-xl font-bold text-white group-hover:text-[#FF7A00] transition-colors line-clamp-2 leading-snug">{item.title}</h3>
+                        <h3 className="text-sm sm:text-base md:text-xl font-bold text-white group-hover:text-[#FF7A00] transition-colors line-clamp-2 leading-snug">{item.course.title}</h3>
                       </div>
-                      <p className="text-[10px] sm:text-xs md:text-sm text-[#888] mb-1 sm:mb-2">By <span className="text-white/80">{item.instructor}</span></p>
+                      <p className="text-[10px] sm:text-xs md:text-sm text-[#888] mb-1 sm:mb-2">By <span className="text-white/80">Seekho Business</span></p>
                       
                       {/* Rating + Category */}
                       <div className="hidden sm:flex items-center gap-3 text-[10px] sm:text-xs font-medium">
                         <div className="flex items-center gap-1 text-[#FF7A00]">
                           <span className="material-symbols-outlined text-[12px] sm:text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                          {item.rating}
-                          <span className="text-[#666] font-normal">({item.reviews})</span>
+                          4.9
+                          <span className="text-[#666] font-normal">(1200)</span>
                         </div>
-                        <span className="bg-white/5 text-[#888] px-1.5 py-0.5 rounded uppercase tracking-wider text-[9px] sm:text-[10px]">{item.category}</span>
+                        <span className="bg-white/5 text-[#888] px-1.5 py-0.5 rounded uppercase tracking-wider text-[9px] sm:text-[10px]">{item.course.category}</span>
                       </div>
                     </div>
 
-                    {/* Price on mobile — inline */}
+                    {/* Price on mobile ΓÇö inline */}
                     <div className="flex items-center gap-2 mt-1 sm:mt-2">
-                      <span className="text-base sm:text-lg md:text-xl font-bold text-[#FF7A00]">₹{item.discountPrice}</span>
-                      <span className="text-[10px] sm:text-xs text-[#555] line-through">₹{item.price}</span>
+                      <span className="text-base sm:text-lg md:text-xl font-bold text-[#FF7A00]">Γé╣{item.course.price}</span>
+                      <span className="text-[10px] sm:text-xs text-[#555] line-through">Γé╣{item.course.price * 20}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Action buttons — below content */}
+                {/* Action buttons ΓÇö below content */}
                 <div className="flex items-center gap-4 sm:gap-6 mt-3 sm:mt-4 md:mt-5 pt-3 sm:pt-4 border-t border-white/5">
                   <button 
                     onClick={() => removeItem(item.id)}
@@ -131,7 +148,7 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* ── Checkout Summary ── */}
+          {/* ΓöÇΓöÇ Checkout Summary ΓöÇΓöÇ */}
           <div className="w-full xl:w-[380px] shrink-0">
             <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[32px] border border-white/5 p-5 sm:p-6 md:p-8 sticky top-8 shadow-2xl">
               <h2 className="text-base sm:text-lg md:text-xl font-bold mb-5 md:mb-8">Order Summary</h2>
@@ -139,15 +156,15 @@ export default function CartPage() {
               <div className="space-y-3 sm:space-y-4 mb-5 md:mb-8">
                 <div className="flex justify-between text-[#888] text-xs sm:text-sm">
                   <span>Original Price</span>
-                  <span>₹{subtotal.toLocaleString()}</span>
+                  <span>Γé╣{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-[#FF7A00] text-xs sm:text-sm font-medium">
                   <span>Discount</span>
-                  <span>- ₹{totalDiscount.toLocaleString()}</span>
+                  <span>- Γé╣{totalDiscount.toLocaleString()}</span>
                 </div>
                 <div className="pt-3 sm:pt-4 border-t border-white/5 flex justify-between items-center">
                   <span className="text-sm sm:text-base font-bold">Total</span>
-                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-white">₹{total.toLocaleString()}</span>
+                  <span className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Γé╣{total.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -177,7 +194,7 @@ export default function CartPage() {
 
         </div>
 
-        {/* ── You Might Also Like ── */}
+        {/* ΓöÇΓöÇ You Might Also Like ΓöÇΓöÇ */}
         <div className="mt-12 sm:mt-16 md:mt-24">
           <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-5 sm:mb-6 md:mb-10">You might also like</h2>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-6">
@@ -189,7 +206,7 @@ export default function CartPage() {
                  <div className="flex-1 min-w-0">
                     <h4 className="text-[10px] sm:text-xs md:text-sm font-bold text-white truncate">Business Growth 101</h4>
                     <p className="text-[8px] sm:text-[10px] md:text-xs text-[#666] mb-0.5 sm:mb-1">Jane Smith</p>
-                    <span className="text-[#FF7A00] font-bold text-[10px] sm:text-xs md:text-sm">₹499</span>
+                    <span className="text-[#FF7A00] font-bold text-[10px] sm:text-xs md:text-sm">Γé╣499</span>
                  </div>
                </div>
              ))}

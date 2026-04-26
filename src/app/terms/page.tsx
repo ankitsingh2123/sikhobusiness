@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-semibold leading-[1.4] max-md:text-lg mb-3 text-sb-text-primary">3. Course Access & Payment</h2>
             <ul className="list-disc ml-6 space-y-2 text-base leading-relaxed">
               <li>First 5 videos of each course are free to watch</li>
-              <li>Full course access requires a one-time payment of ₹99</li>
+              <li>Full course access requires a one-time payment of Γé╣99</li>
               <li>Once purchased, you get lifetime access to the course</li>
               <li>Payments are processed securely via Razorpay</li>
               <li>Refunds are available within 7 days of purchase if less than 20% of the course has been viewed</li>

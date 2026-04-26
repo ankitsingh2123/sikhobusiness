@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Blog — Business Tips, Book Summaries & Learning Guides",
+  title: "Blog ΓÇö Business Tips, Book Summaries & Learning Guides",
   description:
     "Read insightful articles on business, finance, NCERT study guides, book summaries, and productivity tips. Learn smarter with Seekho Business blog.",
   alternates: {
     canonical: "https://seekhobussiness.co.in/blog",
   },
   openGraph: {
-    title: "Seekho Business Blog — Business & Education Insights",
+    title: "Seekho Business Blog ΓÇö Business & Education Insights",
     description:
       "Articles on business books, finance, NCERT study guides, and self-improvement.",
     url: "https://seekhobussiness.co.in/blog",
@@ -33,7 +33,7 @@ const blogPosts = [
   {
     title: "Top 5 Business Books Every Student Must Read in 2026",
     excerpt:
-      "From Rich Dad Poor Dad to The Psychology of Money — these five books will transform how you think about wealth, investing, and career success.",
+      "From Rich Dad Poor Dad to The Psychology of Money ΓÇö these five books will transform how you think about wealth, investing, and career success.",
     slug: "top-5-business-books",
     category: "Business",
     readTime: "6 min read",
@@ -43,7 +43,7 @@ const blogPosts = [
     featured: false,
   },
   {
-    title: "NCERT Physics Class 10 — Complete Study Guide & Tips",
+    title: "NCERT Physics Class 10 ΓÇö Complete Study Guide & Tips",
     excerpt:
       "Master Light, Electricity, and Magnetic Effects with our comprehensive guide. Includes video lesson links, formula sheets, and exam strategies.",
     slug: "ncert-physics-study-guide",
@@ -67,7 +67,7 @@ const blogPosts = [
     featured: false,
   },
   {
-    title: "Understanding Assets vs Liabilities — A Visual Guide",
+    title: "Understanding Assets vs Liabilities ΓÇö A Visual Guide",
     excerpt:
       "The most important concept from Rich Dad Poor Dad explained with Indian examples. Real estate, stocks, and building your asset column step by step.",
     slug: "assets-vs-liabilities-guide",
@@ -88,7 +88,7 @@ export default function BlogPage() {
 
   return (
     <div className="pb-24 md:pb-12">
-      {/* ═══ Header ═══ */}
+      {/* ΓòÉΓòÉΓòÉ Header ΓòÉΓòÉΓòÉ */}
       <section className="px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto pt-8 mb-8">
         <nav aria-label="Breadcrumb" className="mb-6">
           <ol className="flex items-center gap-2 text-sm text-sb-text-dim">
@@ -114,7 +114,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* ═══ Category Filters ═══ */}
+      {/* ΓòÉΓòÉΓòÉ Category Filters ΓòÉΓòÉΓòÉ */}
       <section className="px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto mb-8">
         <div className="flex flex-wrap gap-2">
           {blogCategories.map((cat, idx) => (
@@ -128,7 +128,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* ═══ Featured Post ═══ */}
+      {/* ΓòÉΓòÉΓòÉ Featured Post ΓòÉΓòÉΓòÉ */}
       {featured && (
         <section className="px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto mb-12 animate-fade-in-up [animation-delay:0.1s]">
           <Link
@@ -177,7 +177,7 @@ export default function BlogPage() {
                 </p>
                 <div className="flex items-center gap-4 text-sm text-sb-text-dim">
                   <span>{featured.date}</span>
-                  <span>•</span>
+                  <span>ΓÇó</span>
                   <span>{featured.readTime}</span>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function BlogPage() {
         </section>
       )}
 
-      {/* ═══ Blog Grid ═══ */}
+      {/* ΓòÉΓòÉΓòÉ Blog Grid ΓòÉΓòÉΓòÉ */}
       <section className="px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto animate-fade-in-up [animation-delay:0.2s]">
         <h2 className="text-2xl font-semibold leading-[1.4] max-md:text-lg mb-6 text-sb-text-primary">
           Latest Articles
@@ -235,7 +235,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* ═══ Newsletter CTA ═══ */}
+      {/* ΓòÉΓòÉΓòÉ Newsletter CTA ΓòÉΓòÉΓòÉ */}
       <section className="px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto mt-16">
         <div
           className="rounded-3xl p-8 md:p-12 text-center relative overflow-hidden border border-sb-border"

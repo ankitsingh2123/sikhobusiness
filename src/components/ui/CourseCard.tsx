@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 
 interface CourseCardProps {
@@ -107,7 +107,7 @@ export function CourseCard({
                 <span
                   className="text-sm font-bold text-[#FF7A00]"
                 >
-                  ₹{price}
+                  Γé╣{price}
                 </span>
               )}
             </div>
@@ -122,7 +122,7 @@ export function CourseCard({
                   {progress}%
                 </span>
                 <span className="text-xs text-[#999]">
-                  • {progressLabel}
+                  ΓÇó {progressLabel}
                 </span>
               </div>
               <div className="h-1 w-full bg-black/[0.08] rounded-full overflow-hidden">
@@ -139,7 +139,7 @@ export function CourseCard({
 
           {isLocked && (
             <span className="text-xs text-[#999]">
-              Locked — Unlock for ₹99
+              Locked ΓÇö Unlock for Γé╣99
             </span>
           )}
         </div>

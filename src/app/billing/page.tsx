@@ -1,210 +1,287 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import dynamic from "next/dynamic";
 
-export default function BillingPage() {
-  const invoices = [
-    {
-      id: "#SB-2023-8901",
-      date: "Oct 24, 2023",
-      title: "Advanced Meta Ads Mastery",
-      type: "Course Purchase",
-      amount: "₹99.00",
-      status: "Paid"
-    },
-    {
-      id: "#SB-2023-8842",
-      date: "Sep 12, 2023",
-      title: "B2B Sales Fundamentals",
-      type: "Course Purchase",
-      amount: "₹99.00",
-      status: "Paid"
-    },
-    {
-      id: "#SB-2023-8715",
-      date: "Aug 05, 2023",
-      title: "Financial Modeling 101",
-      type: "Course Purchase",
-      amount: "₹99.00",
-      status: "Paid"
-    },
-    {
-      id: "#SB-2023-8603",
-      date: "Jul 18, 2023",
-      title: "Effective Communication for Leaders",
-      type: "Course Purchase",
-      amount: "₹99.00",
-      status: "Paid"
-    },
-    {
-      id: "#SB-2023-8511",
-      date: "Jun 02, 2023",
-      title: "Excel Pro: Macros & VBA",
-      type: "Course Purchase",
-      amount: "₹99.00",
-      status: "Paid"
-    }
-  ];
+const CertificateModal = dynamic(
+  () => import("@/components/certificate/CertificateModal"),
+  { ssr: false }
+);
+
+interface CertData {
+  courseId: string;
+  courseTitle: string;
+  courseCategory: string;
+  courseThumbnail: string | null;
+  totalVideos: number;
+  completedVideos: number;
+  completionPercent: number;
+  isEligible: boolean;
+  purchasedAt: string;
+  issuedAt: string | null;
+}
+
+export default function CertificatesPage() {
+  const [certs, setCerts] = useState<CertData[]>([]);
+  const [userName, setUserName] = useState("Student");
+  const [loading, setLoading] = useState(true);
+  const [activeCert, setActiveCert] = useState<CertData | null>(null);
+  const [filter, setFilter] = useState<"ALL" | "EARNED" | "INPROGRESS">("ALL");
+
+  useEffect(() => {
+    fetch("/api/certificates")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.certificates) setCerts(data.certificates);
+        if (data.userName) setUserName(data.userName);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const earned = certs.filter((c) => c.isEligible);
+  const inProgress = certs.filter((c) => !c.isEligible);
+
+  const filtered =
+    filter === "EARNED" ? earned :
+    filter === "INPROGRESS" ? inProgress :
+    certs;
 
   return (
-    <div className="min-h-screen bg-[#111111] px-4 md:px-8 py-8 md:py-12 font-sans text-white">
-      <div className="max-w-[1200px] lg:max-w-full mx-auto">
-        
-        {/* Header */}
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-2xl md:text-4xl text-white mb-2 font-serif tracking-wide">Transaction History</h1>
-          <p className="text-[#999] text-sm md:text-[15px] font-sans">View and download receipts for all your past purchases.</p>
-        </div>
+    <>
+      {activeCert && activeCert.issuedAt && (
+        <CertificateModal
+          userName={userName}
+          courseTitle={activeCert.courseTitle}
+          courseCategory={activeCert.courseCategory}
+          issuedAt={activeCert.issuedAt}
+          onClose={() => setActiveCert(null)}
+        />
+      )}
 
-        {/* Transaction History Card */}
-        <div className="bg-[#1A1A1A] rounded-2xl border border-[#FF7A00]/10 overflow-hidden shadow-xl">
-          
-          <div className="p-6 md:px-8 border-b border-white/5 flex items-center justify-between">
-            <h2 className="text-[22px] font-bold tracking-tight">Transaction History</h2>
-            <button className="flex items-center gap-2 text-[#FFB084] text-[14px] font-bold hover:text-[#FFC29D] transition-colors">
-              <span className="material-symbols-outlined text-[18px]">filter_list</span>
-              Filter
-            </button>
+      <div className="min-h-screen bg-[#111] px-4 md:px-8 py-8 md:py-12">
+        <div className="max-w-5xl mx-auto">
+
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 text-[#888] text-xs mb-3">
+              <Link href="/" className="hover:text-white transition-colors">Home</Link>
+              <span>/</span>
+              <span className="text-white">Certificates</span>
+            </div>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h1 className="text-3xl md:text-4xl text-white font-serif tracking-wide">
+                  My Certificates
+                </h1>
+                <p className="text-[#888] text-sm mt-2">
+                  Complete all videos in a course to earn your certificate.
+                </p>
+              </div>
+              {/* Trophy Icon */}
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
+                style={{ background: "linear-gradient(135deg, #c8a96e22, #c8a96e11)", border: "1px solid #c8a96e33" }}>
+                <span className="material-symbols-outlined text-[#c8a96e] text-[28px]">workspace_premium</span>
+              </div>
+            </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <div className="min-w-[900px]">
-              {/* Table Header */}
-              <div className="grid grid-cols-12 gap-4 px-8 py-4 border-b border-white/5">
-                <div className="col-span-2 text-[11px] font-bold tracking-[0.15em] text-[#888] uppercase">Order ID</div>
-                <div className="col-span-2 text-[11px] font-bold tracking-[0.15em] text-[#888] uppercase">Date</div>
-                <div className="col-span-4 text-[11px] font-bold tracking-[0.15em] text-[#888] uppercase">Item</div>
-                <div className="col-span-1 text-[11px] font-bold tracking-[0.15em] text-[#888] uppercase">Amount</div>
-                <div className="col-span-2 text-[11px] font-bold tracking-[0.15em] text-[#888] uppercase">Status</div>
-                <div className="col-span-1 text-[11px] font-bold tracking-[0.15em] text-[#888] uppercase text-right">Action</div>
-              </div>
-
-              {/* Table Body */}
-              <div className="flex flex-col">
-                {invoices.map((inv, idx) => (
-                  <div key={inv.id} className={`grid grid-cols-12 gap-4 items-center px-8 py-6 hover:bg-white/[0.02] transition-colors ${idx !== invoices.length - 1 ? "border-b border-white/5" : ""}`}>
-                    
-                    <div className="col-span-2 text-[13px] text-[#CCC] font-medium tracking-wide">
-                      {inv.id}
-                    </div>
-
-                    <div className="col-span-2 text-[14px] text-white">
-                      {inv.date}
-                    </div>
-
-                    <div className="col-span-4 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center shrink-0 border border-white/5">
-                        <span className="material-symbols-outlined text-[#888] text-[20px]">menu_book</span>
-                      </div>
-                      <div>
-                        <p className="text-[15px] font-bold text-white mb-1 tracking-tight">{inv.title}</p>
-                        <p className="text-[12px] text-[#FFB084] font-medium">{inv.type}</p>
-                      </div>
-                    </div>
-
-                    <div className="col-span-1 text-[14px] font-bold text-white tracking-wide">
-                      {inv.amount}
-                    </div>
-
-                    <div className="col-span-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#3CE36A]/30 bg-[#3CE36A]/10 text-[#3CE36A] text-[12px] font-bold tracking-wider uppercase">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#3CE36A]"></span>
-                        {inv.status}
-                      </span>
-                    </div>
-
-                    <div className="col-span-1 flex justify-end">
-                      <button className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 text-[#CCC] text-[12px] font-bold hover:bg-white/10 hover:text-white transition-colors">
-                        <span className="material-symbols-outlined text-[16px]">download</span>
-                        Invoice
-                      </button>
-                    </div>
-
+          {/* Stats */}
+          {!loading && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div className="rounded-2xl border border-white/5 p-5" style={{ background: "#1A1A1A" }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#c8a96e22" }}>
+                    <span className="material-symbols-outlined text-[#c8a96e] text-[18px]">workspace_premium</span>
                   </div>
-                ))}
+                  <span className="text-[#888] text-xs uppercase tracking-wider">Certificates Earned</span>
+                </div>
+                <p className="text-3xl text-white font-serif">{earned.length}</p>
+              </div>
+              <div className="rounded-2xl border border-white/5 p-5" style={{ background: "#1A1A1A" }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#8892FF22" }}>
+                    <span className="material-symbols-outlined text-[#8892FF] text-[18px]">school</span>
+                  </div>
+                  <span className="text-[#888] text-xs uppercase tracking-wider">Courses Enrolled</span>
+                </div>
+                <p className="text-3xl text-white font-serif">{certs.length}</p>
+              </div>
+              <div className="rounded-2xl border border-white/5 p-5" style={{ background: "#1A1A1A" }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#3CE36A22" }}>
+                    <span className="material-symbols-outlined text-[#3CE36A] text-[18px]">play_circle</span>
+                  </div>
+                  <span className="text-[#888] text-xs uppercase tracking-wider">In Progress</span>
+                </div>
+                <p className="text-3xl text-white font-serif">{inProgress.length}</p>
               </div>
             </div>
+          )}
+
+          {/* Filter Tabs */}
+          <div className="flex gap-2 mb-6">
+            {([
+              { key: "ALL", label: "All Courses" },
+              { key: "EARNED", label: `🏆 Earned (${earned.length})` },
+              { key: "INPROGRESS", label: `📚 In Progress (${inProgress.length})` },
+            ] as const).map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => setFilter(key)}
+                className={`px-4 py-2 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
+                  filter === key
+                    ? "bg-[#c8a96e]/15 text-[#c8a96e] border border-[#c8a96e]/30"
+                    : "text-[#888] hover:text-white border border-transparent"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
-          {/* Table Footer */}
-          <div className="px-8 py-5 border-t border-white/5 flex items-center justify-between">
-            <p className="text-[#888] text-[13px]">Showing 5 of 5 transactions</p>
-            <div className="flex items-center gap-4">
-              <button className="text-[#666] hover:text-white transition-colors">
-                <span className="material-symbols-outlined text-[20px]">chevron_left</span>
-              </button>
-              <button className="text-[#666] hover:text-white transition-colors">
-                <span className="material-symbols-outlined text-[20px]">chevron_right</span>
-              </button>
+          {/* Skeleton */}
+          {loading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-36 rounded-2xl animate-pulse" style={{ background: "#1A1A1A" }} />
+              ))}
             </div>
-          </div>
+          )}
+
+          {/* Empty */}
+          {!loading && filtered.length === 0 && (
+            <div className="py-20 text-center rounded-2xl border border-white/5" style={{ background: "#1A1A1A" }}>
+              <span className="material-symbols-outlined text-[48px] text-[#333] block mb-3">workspace_premium</span>
+              <p className="text-[#666] text-sm">
+                {filter === "EARNED"
+                  ? "No certificates earned yet. Complete a course to get your first one!"
+                  : "No courses found."}
+              </p>
+              {filter !== "ALL" && (
+                <button onClick={() => setFilter("ALL")} className="mt-4 text-xs text-[#c8a96e] hover:underline">
+                  View all courses
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Certificate / Progress Cards */}
+          {!loading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {filtered.map((cert) => (
+                <div
+                  key={cert.courseId}
+                  className={`rounded-2xl border overflow-hidden transition-all duration-200 ${
+                    cert.isEligible
+                      ? "border-[#c8a96e]/20 hover:border-[#c8a96e]/50"
+                      : "border-white/5 hover:border-white/10"
+                  }`}
+                  style={{ background: "#1A1A1A" }}
+                >
+                  <div className="flex items-start gap-4 p-5">
+                    {/* Thumbnail */}
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                      {cert.courseThumbnail ? (
+                        <Image src={cert.courseThumbnail} alt={cert.courseTitle} fill className="object-cover" unoptimized />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-[#222]">
+                          <span className="material-symbols-outlined text-[#444] text-[24px]">menu_book</span>
+                        </div>
+                      )}
+                      {/* Gold overlay if earned */}
+                      {cert.isEligible && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                          <span className="material-symbols-outlined text-[#c8a96e] text-[28px]">workspace_premium</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <h3 className="text-white text-sm font-semibold line-clamp-2 leading-tight">{cert.courseTitle}</h3>
+                          <p className="text-[#c8a96e] text-xs mt-1 capitalize">{cert.courseCategory}</p>
+                        </div>
+                        {cert.isEligible ? (
+                          <span className="shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold"
+                            style={{ background: "#c8a96e22", color: "#c8a96e", border: "1px solid #c8a96e44" }}>
+                            🏆 Earned
+                          </span>
+                        ) : (
+                          <span className="shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-medium bg-white/5 text-[#888] border border-white/8">
+                            In Progress
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Progress bar */}
+                      <div className="mt-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[10px] text-[#666]">
+                            {cert.completedVideos}/{cert.totalVideos} videos completed
+                          </span>
+                          <span className={`text-[10px] font-semibold ${cert.isEligible ? "text-[#c8a96e]" : "text-[#888]"}`}>
+                            {cert.completionPercent}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "#2A2A2A" }}>
+                          <div
+                            className="h-full rounded-full transition-all duration-700"
+                            style={{
+                              width: `${cert.completionPercent}%`,
+                              background: cert.isEligible
+                                ? "linear-gradient(90deg, #c8a96e, #e8d5a3)"
+                                : "linear-gradient(90deg, #8892FF, #6366f1)",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Footer */}
+                  <div className="px-5 pb-4 flex items-center justify-between gap-3">
+                    <Link
+                      href={`/courses/${cert.courseId}`}
+                      className="text-xs text-[#888] hover:text-white transition-colors flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-[13px]">play_circle</span>
+                      {cert.isEligible ? "Revisit Course" : "Continue Learning"}
+                    </Link>
+
+                    {cert.isEligible ? (
+                      <button
+                        onClick={() => setActiveCert(cert)}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all"
+                        style={{ background: "#c8a96e", color: "#1a1a2e" }}
+                      >
+                        <span className="material-symbols-outlined text-[14px]">download</span>
+                        View Certificate
+                      </button>
+                    ) : (
+                      <div className="text-[10px] text-[#666]">
+                        {cert.totalVideos - cert.completedVideos} videos left
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Bottom note */}
+          {!loading && earned.length > 0 && (
+            <p className="text-[#555] text-xs text-center mt-8">
+              Certificates are verified by Seekho Business. Share your achievement with pride! 🎓
+            </p>
+          )}
 
         </div>
-
-        {/* Payment Methods Section */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pb-12">
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-6 shadow-lg hover:border-[#FF7A00]/20 transition-colors md:col-span-2">
-            <h3 className="text-[18px] font-bold mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#FFB084] text-[20px]">credit_card</span>
-              Payment Method
-            </h3>
-            <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-8 bg-[#222] rounded flex items-center justify-center border border-white/10">
-                  <span className="text-[10px] font-bold tracking-tighter italic text-white/50">VISA</span>
-                </div>
-                <div>
-                  <p className="text-[14px] font-bold text-white tracking-widest">•••• •••• •••• 4242</p>
-                  <p className="text-[12px] text-[#666]">Expires 12/25</p>
-                </div>
-              </div>
-              <button className="text-[12px] font-bold text-[#FFB084] hover:text-[#FFD2B8] transition-colors">Edit</button>
-            </div>
-          </div>
-
-          {/* Total Spent Card */}
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-5 md:p-6 shadow-sm">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-[#3CE36A]/10 flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#3CE36A] text-[16px] md:text-[18px]">account_balance_wallet</span>
-              </div>
-              <span className="text-[#999] text-[11px] md:text-[13px] font-serif tracking-wider">Total Spent</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl text-white font-serif tracking-wider font-medium">₹4,995</h2>
-          </div>
-
-          {/* Courses Purchased Card */}
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-5 md:p-6 shadow-sm">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-[#8892FF]/10 flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#8892FF] text-[16px] md:text-[18px]">library_books</span>
-              </div>
-              <span className="text-[#999] text-[11px] md:text-[13px] font-serif tracking-wider">Courses Purchased</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl text-white font-serif tracking-wider font-medium">12</h2>
-          </div>
-
-          <div className="bg-[#1A1A1A] rounded-2xl border border-white/5 p-6 shadow-lg hover:border-[#FF7A00]/20 transition-colors md:col-span-2">
-            <h3 className="text-[18px] font-bold mb-6 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#FFB084] text-[20px]">mail</span>
-              Billing Email
-            </h3>
-            <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#FF7A00]/10 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[#FF7A00] text-[18px]">alternate_email</span>
-                </div>
-                <div>
-                  <p className="text-[14px] font-bold text-white">arjun.mehta@techcorp.com</p>
-                  <p className="text-[12px] text-[#666]">Primary billing contact</p>
-                </div>
-              </div>
-              <button className="text-[12px] font-bold text-[#FFB084] hover:text-[#FFD2B8] transition-colors">Change</button>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
+    </>
   );
 }

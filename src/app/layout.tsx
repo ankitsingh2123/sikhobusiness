@@ -12,11 +12,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://seekhobussiness.co.in"),
   title: {
-    default: "Seekho Business — Learn Business, NCERT & Life Skills Through Video Courses",
+    default: "Seekho Business ΓÇö Learn Business, NCERT & Life Skills Through Video Courses",
     template: "%s | Seekho Business",
   },
   description:
-    "India's #1 video learning platform for business books, NCERT chapters & life skills. Watch 70+ videos per book starting at ₹99. Rich Dad Poor Dad, Physics, Chemistry & more.",
+    "India's #1 video learning platform for business books, NCERT chapters & life skills. Watch 70+ videos per book starting at Γé╣99. Rich Dad Poor Dad, Physics, Chemistry & more.",
   keywords: [
     "seekho business",
     "business video courses",
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://seekhobussiness.co.in",
     siteName: "Seekho Business",
-    title: "Seekho Business — Learn Business, NCERT & Life Skills",
+    title: "Seekho Business ΓÇö Learn Business, NCERT & Life Skills",
     description:
-      "India's #1 video learning platform. Watch 70+ videos per book starting at ₹99.",
+      "India's #1 video learning platform. Watch 70+ videos per book starting at Γé╣99.",
     images: [
       {
         url: "/og-image.png",
@@ -55,9 +55,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Seekho Business — Video Learning Platform",
+    title: "Seekho Business ΓÇö Video Learning Platform",
     description:
-      "Learn business, NCERT & life skills through premium video courses. Starting at ₹99.",
+      "Learn business, NCERT & life skills through premium video courses. Starting at Γé╣99.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -143,7 +143,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>

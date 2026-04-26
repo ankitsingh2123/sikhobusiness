@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 
 interface FeaturedCourseProps {
@@ -129,12 +129,12 @@ export function FeaturedCourse({
               <span
                 className="text-2xl font-bold text-sb-brand-light"
               >
-                ₹{price}
+                Γé╣{price}
               </span>
               <span
                 className="text-sm line-through text-sb-text-dim"
               >
-                ₹999
+                Γé╣999
               </span>
             </div>
             <span

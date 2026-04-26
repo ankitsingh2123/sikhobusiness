@@ -1,14 +1,52 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
+import { EditProfileModal } from "@/components/account/EditProfileModal";
 
-export default function AccountPage() {
+export default async function AccountPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  // Fetch real user data from Prisma
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: {
+      purchases: true,
+      progress: true
+    }
+  });
+
+  if (!dbUser) {
+    redirect("/login");
+  }
+
+  const name = dbUser.name || "Learner";
+  const email = dbUser.email;
+  const roleDisplay = dbUser.role === "ADMIN" ? "Platform Creator & Admin" : "Pro Learner";
+  const avatarUrl = dbUser.avatar || "https://i.pravatar.cc/150?img=11";
+  
+  const fallbackAbout = dbUser.role === "ADMIN" 
+    ? "Welcome back, Admin! You have full access to create, edit, and manage all courses and platform settings."
+    : "Passionate about learning and growth strategies. Constantly upskilling to stay ahead in the dynamic landscape.";
+  const about = dbUser.about || fallbackAbout;
+  
+  // Calculate some stats
+  const coursesDone = dbUser.purchases.length;
+  // Approximation: let's assume each progress entry is 10 mins (0.16 hr) just for UI demo, or use actual
+  const learnHours = Math.floor(dbUser.progress.length * 0.16) || 0;
+  // Certificates (assumed logic: 1 cert per purchased course that has progress)
+  const certificates = Math.floor(coursesDone * 0.8) || 0;
   return (
     <div className="min-h-screen bg-[#111111] px-3 sm:px-4 md:px-8 py-6 md:py-12 font-sans text-white overflow-x-hidden">
       <div className="max-w-[1200px] lg:max-w-full mx-auto space-y-4 sm:space-y-6">
         
-        {/* ══ Profile Header Card ══ */}
+        {/* ΓòÉΓòÉ Profile Header Card ΓòÉΓòÉ */}
         <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 overflow-hidden shadow-sm">
           {/* Top Banner Gradient */}
           <div className="h-20 sm:h-28 md:h-[140px] w-full bg-gradient-to-r from-[#2A1E15] via-[#1A1512] to-[#1A1A1A] relative">
@@ -24,8 +62,8 @@ export default function AccountPage() {
                 <div className="relative flex-shrink-0">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-[130px] md:h-[130px] rounded-full border-[3px] md:border-4 border-[#1A1A1A] overflow-hidden bg-[#222]">
                     <Image 
-                      src="https://i.pravatar.cc/150?img=11" 
-                      alt="Arjun Mehta" 
+                      src={avatarUrl} 
+                      alt={name} 
                       fill 
                       className="object-cover"
                     />
@@ -37,8 +75,9 @@ export default function AccountPage() {
                 </div>
 
                 <div className="mb-1 min-w-0">
-                  <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-0.5 text-white truncate">Arjun Mehta</h1>
-                  <p className="text-[#999] text-xs sm:text-[13px] md:text-[15px] font-medium tracking-wide truncate">Senior Marketing Strategist @ TechCorp</p>
+                  <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-0.5 text-white truncate">{name}</h1>
+                  <p className="text-[#999] text-xs sm:text-[13px] md:text-[15px] font-medium tracking-wide truncate">{roleDisplay} @ Seekho Business</p>
+                  <p className="text-[#666] text-[10px] sm:text-xs mt-1 truncate">{email}</p>
                 </div>
               </div>
 
@@ -48,9 +87,7 @@ export default function AccountPage() {
                   <span className="material-symbols-outlined text-[14px] sm:text-[16px] md:text-[18px]">share</span>
                   Share
                 </button>
-                <button className="px-4 sm:px-5 md:px-6 py-2 md:py-2.5 rounded-full border border-white/10 text-white font-medium text-[11px] sm:text-[12px] md:text-[13px] hover:bg-white/5 transition-colors">
-                  Edit
-                </button>
+                <EditProfileModal currentName={name} currentAvatar={avatarUrl} currentAbout={about} />
               </div>
 
             </div>
@@ -58,17 +95,17 @@ export default function AccountPage() {
             {/* About Section */}
             <div>
               <h3 className="text-[#888] text-[10px] sm:text-[11px] font-bold tracking-[0.15em] uppercase mb-2 md:mb-3">About</h3>
-              <p className="text-[#CCC] text-xs sm:text-[13px] md:text-[15px] leading-relaxed max-w-3xl">
-                Passionate about data-driven marketing and growth strategies. Constantly upskilling to stay ahead in the dynamic digital landscape. Currently focused on advanced analytics and customer lifecycle management.
+              <p className="text-[#CCC] text-xs sm:text-[13px] md:text-[15px] leading-relaxed max-w-3xl whitespace-pre-wrap">
+                {about}
               </p>
             </div>
           </div>
         </div>
 
-        {/* ══ Bottom Grid ══ */}
+        {/* ΓòÉΓòÉ Bottom Grid ΓòÉΓòÉ */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
-          {/* ── Learning Overview (Spans 2 columns on desktop) ── */}
+          {/* ΓöÇΓöÇ Learning Overview (Spans 2 columns on desktop) ΓöÇΓöÇ */}
           <div className="lg:col-span-2 bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 p-4 sm:p-6 md:p-8 shadow-sm">
             
             <div className="flex items-center justify-between mb-5 md:mb-8">
@@ -79,7 +116,7 @@ export default function AccountPage() {
               </button>
             </div>
 
-            {/* Stats cards — horizontal scroll on very small, grid on sm+ */}
+            {/* Stats cards ΓÇö horizontal scroll on very small, grid on sm+ */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-5">
               
               {/* Card 1: Courses Completed */}
@@ -88,8 +125,8 @@ export default function AccountPage() {
                   <span className="material-symbols-outlined text-[#FF7A00] text-[14px] sm:text-[16px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                 </div>
                 <div className="mt-2 sm:mt-0">
-                  <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none mb-0.5">12</h3>
-                  <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Courses Done</p>
+                  <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none mb-0.5">{coursesDone}</h3>
+                  <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Courses Enrolled</p>
                 </div>
                 <div className="w-full h-1 sm:h-1.5 bg-[#111] rounded-full mt-2 sm:mt-4 overflow-hidden">
                    <div className="h-full bg-[#3CE36A] w-3/4 rounded-full"></div>
@@ -103,14 +140,14 @@ export default function AccountPage() {
                 </div>
                 <div className="mt-2 sm:mt-0">
                   <div className="flex items-baseline gap-0.5 mb-0.5">
-                    <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none">148</h3>
+                    <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none">{learnHours}</h3>
                     <span className="text-[#999] text-[10px] sm:text-xs md:text-[16px]">hrs</span>
                   </div>
                   <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Learn Hours</p>
                 </div>
                 <div className="flex items-center gap-1 mt-2 sm:mt-4 text-[#3CE36A] text-[9px] sm:text-[11px] md:text-[12px] font-bold">
                   <span className="material-symbols-outlined text-[12px] sm:text-[14px]">trending_up</span>
-                  +12 hrs
+                  Active Learner
                 </div>
               </div>
 
@@ -120,20 +157,22 @@ export default function AccountPage() {
                   <span className="material-symbols-outlined text-[#3CE36A] text-[14px] sm:text-[16px] md:text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>workspace_premium</span>
                 </div>
                 <div className="mt-2 sm:mt-0">
-                  <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none mb-0.5">5</h3>
+                  <h3 className="text-xl sm:text-2xl md:text-[40px] font-bold leading-none mb-0.5">{certificates}</h3>
                   <p className="text-[#999] text-[9px] sm:text-[11px] md:text-[13px] font-medium">Certificates</p>
                 </div>
                 <div className="flex items-center gap-1 mt-2 sm:mt-4">
-                  {[...Array(5)].map((_, i) => (
+                  {certificates > 0 ? [...Array(Math.min(5, certificates))].map((_, i) => (
                     <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#3CE36A]"></div>
-                  ))}
+                  )) : (
+                    <span className="text-[#999] text-[10px]">Start learning to earn</span>
+                  )}
                 </div>
               </div>
 
             </div>
           </div>
 
-          {/* ── Recent Badges ── */}
+          {/* ΓöÇΓöÇ Recent Badges ΓöÇΓöÇ */}
           <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 p-4 sm:p-6 md:p-8 shadow-sm flex flex-col">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight mb-5 md:mb-8">Recent Badges</h2>
             

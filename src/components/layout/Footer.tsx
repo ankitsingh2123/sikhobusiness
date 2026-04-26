@@ -3,134 +3,91 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer
-      className="border-t mt-10 md:mt-16 pt-8 md:pt-12 pb-28 md:pb-12"
-      style={{ borderColor: "rgba(255,255,255,0.05)" }}
+      className="border-t mt-10 pb-28 md:pb-8"
+      style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "#111" }}
     >
-      <div className="px-4 sm:px-6 md:px-8 lg:px-12 max-w-[1400px] mx-auto">
+      <div className="px-4 sm:px-6 md:px-10 w-full py-6">
 
-        {/* Brand row — always full width on top */}
-        <div className="mb-6 md:mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg flex-shrink-0"
-              style={{ background: "linear-gradient(135deg, #FF7A00, #ff9a3c)" }}
-            >
-              <span className="text-white font-bold text-lg">S</span>
-            </div>
-            <span className="font-semibold text-sm" style={{ color: "#e5e2e1" }}>
-              Seekho Business
-            </span>
-          </div>
-          <p className="text-sm mb-4 max-w-sm" style={{ color: "#6b6b6b" }}>
-            India&apos;s #1 video learning platform for business books, NCERT &amp; life skills.
-          </p>
-          <div className="flex gap-3">
-            {[
-              { label: "X (Twitter)", icon: "tag" },
-              { label: "YouTube", icon: "play_circle" },
-              { label: "Instagram", icon: "photo_camera" },
-            ].map((s) => (
-              <a
-                key={s.label}
-                href="#"
-                aria-label={s.label}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-                style={{ backgroundColor: "rgba(255,255,255,0.05)", color: "#6b6b6b" }}
+        {/* 
+          sm:  3 rows — Brand | Platform | Legal | Copyright
+          md:  2 rows — [Brand + Platform + Legal] | [Copyright]
+          lg:  1 row  — Brand + Platform + Legal + Copyright
+        */}
+
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+
+          {/* Row 1 (sm) / Left section (md+) */}
+          <div className="flex flex-col md:flex-row md:items-start lg:items-center gap-5 md:gap-10">
+
+            {/* Brand */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: "linear-gradient(135deg, #FF7A00, #ff9a3c)" }}
               >
-                <span className="material-symbols-outlined text-[16px]">{s.icon}</span>
-              </a>
-            ))}
-          </div>
-        </div>
+                <span className="text-white font-bold text-sm">S</span>
+              </div>
+              <span className="text-white font-semibold text-sm">Seekho Business</span>
+            </div>
 
-        {/* Link columns — 3 equal columns on mobile, 4 on desktop */}
-        <div className="grid grid-cols-3 md:grid-cols-3 gap-4 md:gap-8 mb-8">
-          {/* Platform */}
-          <div>
-            <h3 className="text-xs sm:text-sm font-semibold mb-3" style={{ color: "#e5e2e1" }}>
-              Platform
-            </h3>
-            <ul className="space-y-2">
-              {[
-                { name: "Browse Courses", href: "/courses" },
-                { name: "Blog", href: "/blog" },
-                { name: "About Us", href: "/about" },
-                { name: "Contact", href: "/contact" },
-              ].map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-[11px] sm:text-sm transition-colors hover:text-orange-400 leading-relaxed"
-                    style={{ color: "#6b6b6b" }}
-                  >
-                    {link.name}
+            {/* Divider — md+ only */}
+            <div className="hidden md:block w-px h-4 bg-white/10" />
+
+            {/* Platform links */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-0">
+              <span className="text-[10px] font-semibold uppercase tracking-widest mr-4 sm:block" style={{ color: "#444" }}>
+                Platform
+              </span>
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {[
+                  { name: "Courses", href: "/" },
+                  { name: "Blog", href: "/blog" },
+                  { name: "About", href: "/about" },
+                  { name: "Contact", href: "/contact" },
+                ].map((l) => (
+                  <Link key={l.name} href={l.href}
+                    className="text-[12px] transition-colors hover:text-white whitespace-nowrap"
+                    style={{ color: "#555" }}>
+                    {l.name}
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                ))}
+              </div>
+            </div>
 
-          {/* Categories */}
-          <div>
-            <h3 className="text-xs sm:text-sm font-semibold mb-3" style={{ color: "#e5e2e1" }}>
-              Categories
-            </h3>
-            <ul className="space-y-2">
-              {[
-                { name: "Business Books", href: "/courses?category=business" },
-                { name: "NCERT Physics", href: "/courses?category=ncert" },
-                { name: "Finance", href: "/courses?category=finance" },
-                { name: "Self Help", href: "/courses?category=self-help" },
-              ].map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-[11px] sm:text-sm transition-colors hover:text-orange-400 leading-relaxed"
-                    style={{ color: "#6b6b6b" }}
-                  >
-                    {link.name}
+            {/* Divider — md+ only */}
+            <div className="hidden md:block w-px h-4 bg-white/10" />
+
+            {/* Legal links */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-0">
+              <span className="text-[10px] font-semibold uppercase tracking-widest mr-4 sm:block" style={{ color: "#444" }}>
+                Legal
+              </span>
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {[
+                  { name: "Privacy Policy", href: "/privacy" },
+                  { name: "Terms of Service", href: "/terms" },
+                  { name: "Refund Policy", href: "/terms#refunds" },
+                ].map((l) => (
+                  <Link key={l.name} href={l.href}
+                    className="text-[12px] transition-colors hover:text-white whitespace-nowrap"
+                    style={{ color: "#555" }}>
+                    {l.name}
                   </Link>
-                </li>
-              ))}
-            </ul>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h3 className="text-xs sm:text-sm font-semibold mb-3" style={{ color: "#e5e2e1" }}>
-              Legal
-            </h3>
-            <ul className="space-y-2">
-              {[
-                { name: "Privacy Policy", href: "/privacy" },
-                { name: "Terms of Service", href: "/terms" },
-                { name: "Refund Policy", href: "/terms#refunds" },
-              ].map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-[11px] sm:text-sm transition-colors hover:text-orange-400 leading-relaxed"
-                    style={{ color: "#6b6b6b" }}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* Copyright — bottom on sm/md, right on lg */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between lg:justify-end gap-1 sm:gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/5">
+            <p className="text-[11px]" style={{ color: "#3a3a3a" }}>
+              © {new Date().getFullYear()} Seekho Business. All rights reserved.
+            </p>
+            <p className="text-[11px]" style={{ color: "#3a3a3a" }}>
+              Made with ❤️ in India
+            </p>
           </div>
-        </div>
 
-        {/* Bottom bar */}
-        <div
-          className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
-        >
-          <p className="text-[11px] text-center sm:text-left" style={{ color: "#584235" }}>
-            © {new Date().getFullYear()} Seekho Business. All rights reserved.
-          </p>
-          <p className="text-[11px]" style={{ color: "#584235" }}>
-            Made with ❤️ in India
-          </p>
         </div>
       </div>
     </footer>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
       {/* Footer Text */}
       <div className="mt-10 text-center">
         <p className="text-[#555] text-[11px] font-medium tracking-wide">
-          Secure connection • Professional Learning Environment
+          Secure connection ΓÇó Professional Learning Environment
         </p>
       </div>
 

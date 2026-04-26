@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -117,7 +117,7 @@ export default function CheckoutPage() {
                         <label className="text-[10px] sm:text-xs text-gray-500 font-medium uppercase tracking-wider block mb-1.5 sm:mb-2">CVV</label>
                         <input
                           type="text"
-                          placeholder="•••"
+                          placeholder="ΓÇóΓÇóΓÇó"
                           className="w-full bg-sb-bg border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white placeholder-gray-600 outline-none focus:border-[#FF7A00]/50 transition-colors"
                         />
                       </div>
@@ -240,11 +240,11 @@ export default function CheckoutPage() {
               <div className="p-4 sm:p-6 md:p-8 border-b border-white/5 space-y-3 sm:space-y-4">
                 <div className="flex justify-between text-xs sm:text-sm">
                   <span className="text-gray-400">Subtotal</span>
-                  <span className="text-gray-300 font-medium">₹{subtotal.toLocaleString()}</span>
+                  <span className="text-gray-300 font-medium">Γé╣{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-xs sm:text-sm">
                   <span className="text-[#FF7A00]">Special Discount</span>
-                  <span className="text-[#FF7A00] font-medium">- ₹{discount.toLocaleString()}</span>
+                  <span className="text-[#FF7A00] font-medium">- Γé╣{discount.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
               <div className="p-4 sm:p-6 md:p-8 pt-5 sm:pt-6 pb-4 sm:pb-6">
                 <div className="flex items-baseline justify-between mb-0.5 sm:mb-1">
                   <span className="text-base sm:text-lg md:text-xl font-bold">Total</span>
-                  <span className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">₹{total}</span>
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">Γé╣{total}</span>
                 </div>
                 <div className="text-right mb-5 sm:mb-8">
                   <span className="text-[10px] sm:text-xs text-gray-500">Including all taxes</span>
@@ -261,7 +261,7 @@ export default function CheckoutPage() {
                 {/* Pay Button */}
                 <button className="w-full bg-[#FF7A00] hover:bg-[#FF8F1F] text-[#3D1D00] font-bold text-base sm:text-lg py-3.5 sm:py-5 rounded-xl sm:rounded-2xl transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3 shadow-[0_8px_32px_rgba(255,122,0,0.25)] hover:shadow-[0_12px_40px_rgba(255,122,0,0.35)] hover:-translate-y-0.5 active:translate-y-0">
                   <span className="material-symbols-outlined text-[20px] sm:text-[24px]">lock</span>
-                  Pay ₹{total} Now
+                  Pay Γé╣{total} Now
                 </button>
 
                 <p className="text-center text-[10px] sm:text-xs text-gray-600 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-1.5 font-medium">
