@@ -16,7 +16,7 @@ export default function LoginPage() {
       <div className="w-full max-w-[1000px] bg-[#161616] rounded-2xl md:rounded-[24px] border border-white/5 overflow-hidden shadow-2xl flex flex-col md:flex-row">
         
         {/* Left Side: Branding/Image Panel */}
-        <div className="relative w-full md:w-[45%] lg:w-[40%] bg-[#1A1A1A] p-10 flex flex-col justify-between overflow-hidden min-h-[300px] md:min-h-full">
+        <div className="relative w-full md:w-[45%] lg:w-[40%] bg-[#1A1A1A] p-6 md:p-10 flex flex-col justify-between overflow-hidden min-h-[100px] md:min-h-full">
           {/* Grayscale Background Image */}
           <Image 
             src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&auto=format&fit=crop&q=80" 
@@ -33,8 +33,8 @@ export default function LoginPage() {
             </h1>
           </div>
 
-          {/* Bottom Text */}
-          <div className="relative z-10 mt-20 md:mt-0">
+          {/* Bottom Text - Hidden on mobile to save height */}
+          <div className="relative z-10 mt-4 md:mt-0 hidden md:block">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight tracking-tight">
               Elevate your workforce.
             </h2>
@@ -45,15 +45,15 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side: Login Form */}
-        <div className="w-full md:w-[55%] lg:w-[60%] p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome back</h2>
-            <p className="text-[#888] text-[15px]">Log in to your account to continue learning.</p>
+        <div className="w-full md:w-[55%] lg:w-[60%] p-5 md:p-12 lg:p-16 flex flex-col justify-center">
+          <div className="mb-4 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-1 tracking-tight">Welcome back</h2>
+            <p className="text-[#888] text-[13px] md:text-[15px]">Log in to your account to continue learning.</p>
           </div>
 
           <LoginForm />
 
-          <p className="text-center text-[14px] text-[#888] mt-10">
+          <p className="text-center text-[13px] md:text-[14px] text-[#888] mt-6 md:mt-10">
             Don't have an account yet?{" "}
             <Link href="/auth/register" className="text-[#FF7A00] font-medium hover:underline transition-all">
               Register your team

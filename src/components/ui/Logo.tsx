@@ -1,13 +1,13 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 
 export function Logo({ className = "", showText = true }: { className?: string; showText?: boolean }) {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-1.5 md:gap-3 ${className}`}>
       {/* 3D Generated Icon */}
       <div 
-        className="w-10 h-10 md:w-12 md:h-12 rounded-[14px] flex items-center justify-center relative overflow-hidden shrink-0 shadow-lg shadow-[#FF7A00]/20 border border-white/10"
+        className="w-8 h-8 md:w-12 md:h-12 rounded-[12px] flex items-center justify-center relative overflow-hidden shrink-0 shadow-lg shadow-[#FF7A00]/20 border border-white/10"
       >
         <img 
           src="/logo-icon.png" 
@@ -20,10 +20,10 @@ export function Logo({ className = "", showText = true }: { className?: string; 
       {showText && (
         <div className="flex flex-col -space-y-1">
           <div className="flex items-center">
-            <span className="text-white font-black text-xl md:text-2xl tracking-tight">Seekho</span>
-            <span className="text-[#FF7A00] font-black text-xl md:text-2xl tracking-tight ml-1">Business</span>
+            <span className="text-white font-black text-base md:text-2xl tracking-tight">Seekho</span>
+            <span className="text-[#FF7A00] font-black text-base md:text-2xl tracking-tight ml-1">Business</span>
           </div>
-          <span className="text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase">seekhobusiness.co.in</span>
+          <span className="hidden sm:block text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase">seekhobusiness.co.in</span>
         </div>
       )}
     </div>
