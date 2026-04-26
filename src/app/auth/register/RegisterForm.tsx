@@ -68,12 +68,12 @@ export function RegisterForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
         {/* Name */}
         <div>
           <label
             htmlFor="name"
-            className="text-sm font-medium text-gray-300 block mb-2"
+            className="text-[13px] font-medium text-gray-300 block mb-1.5"
           >
             Full Name
           </label>
@@ -84,7 +84,7 @@ export function RegisterForm() {
             onChange={(e) => setName(e.target.value)}
             placeholder="John Doe"
             required
-            className="w-full py-3.5 px-4 rounded-xl text-sm outline-none transition-all duration-200 bg-[#1A1A1A] border border-white/10 text-white focus:border-[#FF7A00]/50"
+            className="w-full py-2.5 md:py-3.5 px-4 rounded-xl text-sm outline-none transition-all duration-200 bg-[#1A1A1A] border border-white/10 text-white focus:border-[#FF7A00]/50"
             autoComplete="name"
           />
         </div>
@@ -93,7 +93,7 @@ export function RegisterForm() {
         <div>
           <label
             htmlFor="reg-email"
-            className="text-sm font-medium text-gray-300 block mb-2"
+            className="text-[13px] font-medium text-gray-300 block mb-1.5"
           >
             Email Address
           </label>
@@ -104,7 +104,7 @@ export function RegisterForm() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="john@company.com"
             required
-            className="w-full py-3.5 px-4 rounded-xl text-sm outline-none transition-all duration-200 bg-[#1A1A1A] border border-white/10 text-white focus:border-[#FF7A00]/50"
+            className="w-full py-2.5 md:py-3.5 px-4 rounded-xl text-sm outline-none transition-all duration-200 bg-[#1A1A1A] border border-white/10 text-white focus:border-[#FF7A00]/50"
             autoComplete="email"
           />
         </div>
@@ -113,7 +113,7 @@ export function RegisterForm() {
         <div>
           <label
             htmlFor="reg-password"
-            className="text-sm font-medium text-gray-300 block mb-2"
+            className="text-[13px] md:text-sm font-medium text-gray-300 block mb-1.5"
           >
             Password
           </label>
@@ -125,7 +125,7 @@ export function RegisterForm() {
             placeholder="••••••••"
             required
             minLength={8}
-            className="w-full py-3.5 px-4 rounded-xl text-sm outline-none transition-all duration-200 bg-[#1A1A1A] border border-white/10 text-white focus:border-[#FF7A00]/50"
+            className="w-full py-2.5 md:py-3.5 px-4 rounded-xl text-sm outline-none transition-all duration-200 bg-[#1A1A1A] border border-white/10 text-white focus:border-[#FF7A00]/50"
             autoComplete="new-password"
           />
         </div>
@@ -134,7 +134,7 @@ export function RegisterForm() {
         <button
           type="submit"
           disabled={isLoading || isGoogleLoading}
-          className="w-full bg-[#FF7A00] text-white font-bold text-sm py-4 px-6 rounded-xl border-none cursor-pointer transition-all duration-200 shadow-lg hover:bg-[#FF8C1A] disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          className="w-full bg-[#FF7A00] text-white font-bold text-[15px] py-3 md:py-4 px-6 rounded-xl border-none cursor-pointer transition-all duration-200 shadow-lg hover:bg-[#FF8C1A] disabled:opacity-50 disabled:cursor-not-allowed mt-1"
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
@@ -147,7 +147,7 @@ export function RegisterForm() {
         </button>
       </form>
 
-      <div className="relative my-8">
+      <div className="relative my-4 md:my-8">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-white/5"></div>
         </div>
@@ -159,7 +159,7 @@ export function RegisterForm() {
       <button 
         onClick={handleGoogleSignup}
         disabled={isLoading || isGoogleLoading}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-white/10 bg-transparent text-gray-300 hover:bg-white/[0.03] transition-all font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 py-2.5 md:py-3 px-4 rounded-xl border border-white/10 bg-transparent text-gray-300 hover:bg-white/[0.03] transition-all font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isGoogleLoading ? (
             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

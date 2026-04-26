@@ -11,29 +11,29 @@ export const metadata: Metadata = {
 export default function RegisterPage() {
   return (
     <div className="flex-1 flex flex-col md:flex-row bg-sb-bg overflow-hidden max-h-[calc(100vh-64px)]">
-      {/* Left Side: Branding & Features (Tighter Layout) */}
+      {/* Left Side: Branding & Features (Hidden on mobile) */}
       <div 
-        className="w-full md:w-[40%] p-6 md:p-10 lg:p-12 flex flex-col justify-between relative border-r border-white/5 overflow-y-auto"
+        className="hidden md:flex md:w-[40%] p-10 lg:p-12 flex-col justify-between relative border-r border-white/5 overflow-y-auto"
         style={{
           backgroundColor: "#2E2721",
         }}
       >
         <div>
-          <div className="mb-8">
-            <h1 className="text-[#FF7A00] font-bold text-2xl tracking-tight">
+          <div className="mb-4 md:mb-8">
+            <h1 className="text-[#FF7A00] font-bold text-xl md:text-2xl tracking-tight">
               Seekho Business
             </h1>
           </div>
 
-          <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 leading-[1.1] tracking-tight">
+          <h2 className="text-xl md:text-4xl font-bold text-white mb-2 md:mb-4 leading-[1.1] tracking-tight">
             Unlock Professional <br /> Growth
           </h2>
           
-          <p className="text-gray-300 text-[14px] mb-8 leading-relaxed max-w-sm">
+          <p className="hidden md:block text-gray-300 text-[14px] mb-8 leading-relaxed max-w-sm">
             Join thousands of professionals accelerating their careers with expert-led business courses.
           </p>
 
-          <div className="space-y-6">
+          <div className="hidden md:block space-y-6">
             <div className="flex gap-4">
               <div className="w-10 h-10 rounded-lg bg-[#3D332B] flex items-center justify-center flex-shrink-0">
                 <span className="material-symbols-outlined text-[#FF7A00] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>video_library</span>
@@ -66,8 +66,8 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Social Proof (Tighter) */}
-        <div className="mt-8">
+        {/* Social Proof (Hidden on mobile) */}
+        <div className="hidden md:block mt-8">
           <div className="w-full h-px bg-white/10 mb-6" />
           <div className="flex items-center gap-3">
             <div className="flex -space-x-1.5">
@@ -85,11 +85,11 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Side: Form (Tighter) */}
-      <div className="flex-1 bg-sb-bg-elevated p-8 md:p-12 lg:p-16 flex flex-col justify-center items-center overflow-y-auto">
+      <div className="flex-1 bg-sb-bg-elevated p-5 md:p-12 lg:p-16 flex flex-col justify-center items-center overflow-y-auto">
         <div className="w-full max-w-[360px]">
-          <div className="text-center mb-8">
-            <h2 className="text-[30px] font-bold text-white mb-2">Create an account</h2>
-            <p className="text-gray-400 text-[14px]">Start your learning journey today.</p>
+          <div className="text-center mb-4 md:mb-8">
+            <h2 className="text-[24px] md:text-[30px] font-bold text-white mb-1 md:mb-2">Create an account</h2>
+            <p className="text-gray-400 text-[13px] md:text-[14px]">Start your learning journey today.</p>
           </div>
 
           <RegisterForm />

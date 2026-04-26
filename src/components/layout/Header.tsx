@@ -22,10 +22,12 @@ export function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
   
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   
   const supabase = createClient();
   const searchRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -37,11 +39,14 @@ export function Header() {
     return () => subscription.unsubscribe();
   }, [supabase]);
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setShowProfileDropdown(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -162,9 +167,9 @@ export function Header() {
         ) : (
           <>
             {/* Brand Logo */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <Link href="/" className="flex items-center">
-                <Logo className="scale-75 md:scale-90 origin-left" />
+                <Logo className="scale-[0.8] sm:scale-75 md:scale-90 origin-left" />
               </Link>
             </div>
 
@@ -193,47 +198,49 @@ export function Header() {
             </div>
 
             {/* Right: Actions */}
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              {/* Become Creator Button */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 pr-3 md:pr-0">
+              {/* Become Creator Button (Desktop/Tablet) */}
               <Link 
                 href="/become-creator" 
-                className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#FF7A00]/10 to-[#FF7A00]/5 border border-[#FF7A00]/30 hover:border-[#FF7A00] transition-all text-sm font-bold text-[#FF7A00]"
+                className="hidden sm:flex items-center gap-1.5 px-3 md:px-4 py-1.5 rounded-full bg-gradient-to-r from-[#FF7A00]/10 to-[#FF7A00]/5 border border-[#FF7A00]/30 hover:border-[#FF7A00] transition-all text-[11px] md:text-sm font-bold text-[#FF7A00]"
               >
-                <span className="material-symbols-outlined text-[18px]">campaign</span>
-                Become Creator
+                <span className="material-symbols-outlined text-[16px] md:text-[18px]">campaign</span>
+                <span className="hidden md:inline">Become Creator</span>
+                <span className="md:hidden">Creator</span>
               </Link>
 
-              {/* All Categories Button */}
+              {/* All Categories Button (Desktop/Tablet) */}
               <Link 
                 href="/courses" 
-                className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all text-sm font-medium text-white mr-1"
+                className="hidden sm:flex items-center gap-1.5 px-3 md:px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all text-[11px] md:text-sm font-medium text-white mr-1"
               >
-                <span className="material-symbols-outlined text-[18px]">grid_view</span>
-                All Categories
+                <span className="material-symbols-outlined text-[16px] md:text-[18px]">grid_view</span>
+                <span className="hidden md:inline">All Categories</span>
+                <span className="md:hidden">Courses</span>
               </Link>
 
-              {/* Mobile Become Creator Icon */}
+              {/* Mobile Become Creator Icon (Visible on mobile) */}
               <Link 
                 href="/become-creator" 
-                className="md:hidden p-2 rounded-lg text-[#FF7A00] hover:bg-[#FF7A00]/10 transition-all active:scale-90"
+                className="sm:hidden p-1.5 rounded-lg text-[#FF7A00] hover:bg-[#FF7A00]/10 transition-all active:scale-90 flex items-center justify-center"
                 title="Become Creator"
               >
-                <span className="material-symbols-outlined text-[22px]">campaign</span>
+                <span className="material-symbols-outlined text-[20px]">campaign</span>
               </Link>
 
               {/* Mobile search Toggle */}
               <button
                 onClick={() => setIsMobileSearchOpen(true)}
-                className="sm:hidden p-2 rounded-lg text-gray-400 hover:text-white transition-colors"
+                className="sm:hidden p-1.5 rounded-lg text-gray-400 hover:text-white transition-colors flex items-center justify-center"
                 aria-label="Open Search"
               >
-                <span className="material-symbols-outlined text-[20px] sm:text-[24px]">search</span>
+                <span className="material-symbols-outlined text-[20px]">search</span>
               </button>
 
               {/* Cart */}
               <Link
                 href="/cart"
-                className="p-2 rounded-lg transition-all duration-200 hover:scale-105 text-gray-400 hover:text-white"
+                className="p-1.5 rounded-lg transition-all duration-200 hover:scale-105 text-gray-400 hover:text-white flex items-center justify-center"
                 aria-label="Cart"
               >
                 <span className="material-symbols-outlined text-[20px] sm:text-[24px]">shopping_cart</span>
@@ -241,42 +248,46 @@ export function Header() {
 
               {/* Auth */}
               {user ? (
-                <div className="relative group ml-1">
+                <div className="relative group ml-0.5" ref={profileRef}>
                   <button
-                    className="w-8 h-8 rounded-full overflow-hidden border border-white/10 hover:border-[#FF7A00] transition-colors flex-shrink-0"
+                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/10 hover:border-[#FF7A00] transition-colors flex-shrink-0 flex items-center justify-center"
                     title={user.email || "Account"}
                   >
                     {user.user_metadata?.avatar_url ? (
                       <img src={user.user_metadata.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-[#FF7A00] flex items-center justify-center text-white font-bold text-xs">
+                      <div className="w-full h-full bg-[#FF7A00] flex items-center justify-center text-white font-bold text-[10px]">
                         {user.email?.charAt(0).toUpperCase()}
                       </div>
                     )}
                   </button>
                   {/* Dropdown */}
-                  <div className="absolute right-0 top-full mt-2 w-52 py-1.5 rounded-xl border border-white/10 shadow-2xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50"
+                  <div className={`absolute right-0 top-full mt-2 w-52 py-1.5 rounded-xl border border-white/10 shadow-2xl transition-all duration-200 z-50 ${showProfileDropdown ? 'opacity-100 pointer-events-auto translate-y-0' : 'opacity-0 pointer-events-none -translate-y-2 lg:group-hover:opacity-100 lg:group-hover:pointer-events-auto lg:group-hover:translate-y-0'}`}
                     style={{ backgroundColor: "#1A1A1A" }}
                   >
                     <div className="px-4 py-2 border-b border-white/5 mb-1">
                       <p className="text-white text-xs font-medium truncate">{user.user_metadata?.full_name || "Student"}</p>
                       <p className="text-[#666] text-[10px] truncate">{user.email}</p>
                     </div>
-                    <Link href="/account" className="flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
+                    <Link href="/account" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
                       <span className="material-symbols-outlined text-[15px]">person</span>
                       My Profile
                     </Link>
-                    <Link href="/billing" className="flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
+                    <Link href="/billing" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
                       <span className="material-symbols-outlined text-[15px]">workspace_premium</span>
                       My Certificates
                     </Link>
-                    <Link href="/transactions" className="flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
+                    <Link href="/transactions" onClick={() => setShowProfileDropdown(false)} className="flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
                       <span className="material-symbols-outlined text-[15px]">receipt_long</span>
                       Purchase History
                     </Link>
                     <div className="border-t border-white/5 mt-1 pt-1">
                       <button
-                        onClick={() => supabase.auth.signOut()}
+                        onClick={() => {
+                          setShowProfileDropdown(false);
+                          supabase.auth.signOut();
+                        }}
                         className="flex items-center gap-2.5 w-full px-4 py-2 text-[#FF4D4D] hover:bg-[#FF4D4D]/10 transition-colors text-xs"
                       >
                         <span className="material-symbols-outlined text-[15px]">logout</span>
@@ -288,7 +299,7 @@ export function Header() {
               ) : (
                 <Link
                   href="/auth/login"
-                  className="ml-1 px-3 py-1.5 rounded-full text-xs font-bold text-white flex-shrink-0"
+                  className="ml-1 px-2 py-1 rounded-full text-[10px] font-bold text-white flex-shrink-0"
                   style={{ background: "#FF7A00" }}
                 >
                   Login

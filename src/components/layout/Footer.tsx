@@ -3,10 +3,10 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer
-      className="border-t mt-10 pb-28 md:pb-8"
+      className="border-t mt-4 pb-24 md:pb-8"
       style={{ borderColor: "rgba(255,255,255,0.06)", backgroundColor: "#111" }}
     >
-      <div className="px-4 sm:px-6 md:px-10 w-full py-6">
+      <div className="px-4 sm:px-6 md:px-10 w-full py-3">
 
         {/* 
           sm:  3 rows — Brand | Platform | Legal | Copyright
@@ -14,10 +14,10 @@ export function Footer() {
           lg:  1 row  — Brand + Platform + Legal + Copyright
         */}
 
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
 
           {/* Row 1 (sm) / Left section (md+) */}
-          <div className="flex flex-col md:flex-row md:items-start lg:items-center gap-5 md:gap-10">
+          <div className="flex flex-col md:flex-row md:items-start lg:items-center gap-3 md:gap-10">
 
             {/* Brand */}
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -34,7 +34,7 @@ export function Footer() {
             <div className="hidden md:block w-px h-4 bg-white/10" />
 
             {/* Platform links */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-0">
               <span className="text-[10px] font-semibold uppercase tracking-widest mr-4 sm:block" style={{ color: "#444" }}>
                 Platform
               </span>
@@ -79,7 +79,7 @@ export function Footer() {
           </div>
 
           {/* Copyright — bottom on sm/md, right on lg */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between lg:justify-end gap-1 sm:gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between lg:justify-end gap-1 sm:gap-4 pt-2 lg:pt-0 border-t lg:border-t-0 border-white/5">
             <p className="text-[11px]" style={{ color: "#3a3a3a" }}>
               © {new Date().getFullYear()} Seekho Business. All rights reserved.
             </p>
