@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/server";
 import { CheckoutButton } from "@/components/checkout/CheckoutButton";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import CourseCurriculum from "@/components/course/CourseCurriculum";
+import { Button } from "@/components/ui/Button";
 
 export async function generateMetadata({
   params,
@@ -173,12 +174,15 @@ export default async function CoursePage({
                   <span className="text-sm font-bold">You own this course</span>
                 </div>
                 {firstFreeVideo && (
-                  <Link href={`/watch/${firstFreeVideo.id}`}>
-                    <button className="bg-[#FF7A00] hover:bg-[#FF8A1F] text-[#3D1D00] font-bold px-6 sm:px-8 py-3 rounded-lg md:rounded-xl transition-all text-sm md:text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_rgba(255,122,0,0.2)] w-full sm:w-auto">
-                      <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>play_arrow</span>
-                      Continue Watching
-                    </button>
-                  </Link>
+                  <Button 
+                    href={`/watch/${firstFreeVideo.id}`}
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    leftIcon={<span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>play_arrow</span>}
+                  >
+                    Continue Watching
+                  </Button>
                 )}
               </div>
             ) : (

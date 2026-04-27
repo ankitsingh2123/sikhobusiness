@@ -4,11 +4,14 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { Button } from "@/components/ui/Button";
 
 export default function CartPage() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const supabase = createClient();
 
   useEffect(() => {
     fetchCart();
@@ -16,7 +19,10 @@ export default function CartPage() {
 
   const fetchCart = async () => {
     try {
-      const res = await fetch("/api/cart");
+      const token = (await supabase.auth.getSession()).data.session?.access_token;
+      const res = await fetch("/api/cart", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (res.status === 401) {
         router.push("/auth/login");
         return;
@@ -35,7 +41,11 @@ export default function CartPage() {
   const removeItem = async (id: string) => {
     try {
       setItems(items.filter(item => item.id !== id)); // Optimistic UI update
-      const res = await fetch(`/api/cart?id=${id}`, { method: "DELETE" });
+      const token = (await supabase.auth.getSession()).data.session?.access_token;
+      const res = await fetch(`/api/cart?id=${id}`, { 
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (!res.ok) {
         fetchCart(); // Revert if failed
       }
@@ -65,19 +75,24 @@ export default function CartPage() {
         </div>
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4">Your cart is empty</h1>
         <p className="text-[#888] text-sm mb-8 sm:mb-10 max-w-md">Looks like you haven&apos;t added anything yet. Explore our top courses and start learning!</p>
-        <Link 
+        <Button 
           href="/" 
-          className="bg-[#FF7A00] text-black font-bold px-8 py-3.5 rounded-xl hover:bg-[#FF8A1F] transition-all shadow-lg shadow-[#FF7A00]/20 text-sm sm:text-base"
+          variant="primary"
+          size="lg"
         >
           Browse Courses
-        </Link>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#111111] text-white py-6 sm:py-8 md:py-12 px-3 sm:px-4 md:px-8 pb-28 md:pb-12 overflow-x-hidden">
-      <div className="max-w-[1200px] lg:max-w-full mx-auto">
+    <div className="min-h-screen bg-[#0A0A0A] text-white py-6 sm:py-8 md:py-12 px-3 sm:px-4 md:px-8 pb-28 md:pb-12 overflow-hidden relative">
+      {/* Ambient background glow */}
+      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#FF7A00]/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#FF9A44]/10 blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="max-w-[1200px] mx-auto relative z-10">
         
         {/* Header */}
         <div className="mb-6 md:mb-12">
@@ -92,8 +107,10 @@ export default function CartPage() {
             {items.map((item) => (
               <div 
                 key={item.id}
-                className="bg-[#1A1A1A] rounded-2xl md:rounded-[28px] border border-white/5 p-3 sm:p-4 md:p-6 group hover:border-[#FF7A00]/20 transition-all"
+                className="bg-[#111]/80 backdrop-blur-xl rounded-[24px] border border-white/5 p-4 sm:p-5 md:p-6 group hover:border-[#FF7A00]/30 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(255,122,0,0.1)] relative overflow-hidden"
               >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF7A00]/0 to-[#FF7A00]/0 group-hover:from-[#FF7A00]/5 group-hover:to-transparent transition-all duration-500 pointer-events-none" />
+                
                 {/* Mobile: stacked layout */}
                 <div className="flex gap-3 sm:gap-4 md:gap-6">
                   {/* Thumbnail ΓÇö small on mobile, larger on desktop */}
@@ -123,35 +140,42 @@ export default function CartPage() {
 
                     {/* Price on mobile ΓÇö inline */}
                     <div className="flex items-center gap-2 mt-1 sm:mt-2">
-                      <span className="text-base sm:text-lg md:text-xl font-bold text-[#FF7A00]">Γé╣{item.course.price}</span>
-                      <span className="text-[10px] sm:text-xs text-[#555] line-through">Γé╣{item.course.price * 20}</span>
+                      <span className="text-base sm:text-lg md:text-xl font-bold text-[#FF7A00]">₹{item.course.price}</span>
+                      <span className="text-[10px] sm:text-xs text-[#555] line-through">₹{item.course.price * 20}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Action buttons ΓÇö below content */}
+                {/* Action buttons — below content */}
                 <div className="flex items-center gap-4 sm:gap-6 mt-3 sm:mt-4 md:mt-5 pt-3 sm:pt-4 border-t border-white/5">
-                  <button 
+                  <Button 
                     onClick={() => removeItem(item.id)}
-                    className="text-[11px] sm:text-xs md:text-sm font-bold text-[#666] hover:text-red-400 flex items-center gap-1 transition-colors"
+                    variant="ghost"
+                    size="sm"
+                    className="!text-[#666] hover:!text-red-400 !px-0"
+                    leftIcon={<span className="material-symbols-outlined text-[14px] sm:text-[16px] md:text-[18px]">delete</span>}
                   >
-                    <span className="material-symbols-outlined text-[14px] sm:text-[16px] md:text-[18px]">delete</span>
                     Remove
-                  </button>
-                  <button className="text-[11px] sm:text-xs md:text-sm font-bold text-[#666] hover:text-[#FF7A00] flex items-center gap-1 transition-colors">
-                    <span className="material-symbols-outlined text-[14px] sm:text-[16px] md:text-[18px]">favorite</span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="!text-[#666] hover:!text-[#FF7A00] !px-0"
+                    leftIcon={<span className="material-symbols-outlined text-[14px] sm:text-[16px] md:text-[18px]">favorite</span>}
+                  >
                     <span className="hidden sm:inline">Save for later</span>
                     <span className="sm:hidden">Save</span>
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* ΓöÇΓöÇ Checkout Summary ΓöÇΓöÇ */}
+          {/* Checkout Summary */}
           <div className="w-full xl:w-[380px] shrink-0">
-            <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[32px] border border-white/5 p-5 sm:p-6 md:p-8 sticky top-8 shadow-2xl">
-              <h2 className="text-base sm:text-lg md:text-xl font-bold mb-5 md:mb-8">Order Summary</h2>
+            <div className="bg-[#111]/80 backdrop-blur-xl rounded-[32px] border border-white/10 p-6 md:p-8 sticky top-24 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF7A00]/10 blur-[40px] pointer-events-none rounded-full" />
+              <h2 className="text-xl md:text-2xl font-black mb-6 tracking-tight relative z-10">Order Summary</h2>
               
               <div className="space-y-3 sm:space-y-4 mb-5 md:mb-8">
                 <div className="flex justify-between text-[#888] text-xs sm:text-sm">
@@ -168,13 +192,16 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <Link 
+              <Button 
                 href="/checkout"
-                className="w-full bg-[#FF7A00] text-black font-bold py-3 sm:py-3.5 md:py-4 rounded-xl sm:rounded-2xl flex items-center justify-center gap-2 hover:bg-[#FF8A1F] transition-all shadow-lg shadow-[#FF7A00]/20 text-sm sm:text-base mb-4 sm:mb-6"
+                variant="primary"
+                size="lg"
+                fullWidth
+                className="mb-4 sm:mb-6"
+                rightIcon={<span className="material-symbols-outlined text-[18px] sm:text-[20px]">arrow_forward</span>}
               >
                 Checkout Now
-                <span className="material-symbols-outlined text-[18px] sm:text-[20px]">arrow_forward</span>
-              </Link>
+              </Button>
 
               <div className="space-y-3 sm:space-y-4">
                 <p className="text-[10px] sm:text-[11px] text-[#555] text-center leading-relaxed px-2 sm:px-4">
@@ -194,19 +221,19 @@ export default function CartPage() {
 
         </div>
 
-        {/* ΓöÇΓöÇ You Might Also Like ΓöÇΓöÇ */}
-        <div className="mt-12 sm:mt-16 md:mt-24">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-5 sm:mb-6 md:mb-10">You might also like</h2>
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-6">
+        {/* ── You Might Also Like ── */}
+        <div className="mt-16 md:mt-24 relative z-10">
+          <h2 className="text-xl md:text-3xl font-black mb-6 md:mb-10 tracking-tight">You might also like</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
              {[1,2,3,4].map(i => (
-               <div key={i} className="bg-[#1A1A1A] border border-white/5 rounded-xl sm:rounded-2xl p-2.5 sm:p-3 md:p-4 flex gap-2 sm:gap-3 md:gap-4 hover:border-white/10 transition-all cursor-pointer">
-                 <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-lg bg-white/5 shrink-0 overflow-hidden relative">
-                    <Image src={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&auto=format&fit=crop&q=80`} alt="Rec" fill className="object-cover opacity-50" />
+               <div key={i} className="bg-[#111]/80 backdrop-blur-md border border-white/5 rounded-2xl p-4 flex gap-4 hover:border-[#FF7A00]/30 hover:shadow-[0_10px_30px_rgba(255,122,0,0.1)] transition-all cursor-pointer group">
+                 <div className="w-16 h-16 rounded-xl bg-[#1A1A1A] shrink-0 overflow-hidden relative">
+                    <Image src={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&auto=format&fit=crop&q=80`} alt="Rec" fill className="object-cover opacity-60 group-hover:scale-110 transition-transform duration-500" />
                  </div>
-                 <div className="flex-1 min-w-0">
-                    <h4 className="text-[10px] sm:text-xs md:text-sm font-bold text-white truncate">Business Growth 101</h4>
-                    <p className="text-[8px] sm:text-[10px] md:text-xs text-[#666] mb-0.5 sm:mb-1">Jane Smith</p>
-                    <span className="text-[#FF7A00] font-bold text-[10px] sm:text-xs md:text-sm">Γé╣499</span>
+                 <div className="flex-1 min-w-0 flex flex-col justify-center">
+                    <h4 className="text-sm font-bold text-white truncate group-hover:text-[#FF7A00] transition-colors">Business Growth 101</h4>
+                    <p className="text-xs text-[#666] mb-1">Jane Smith</p>
+                    <span className="text-[#3CE36A] font-bold text-sm">₹499</span>
                  </div>
                </div>
              ))}

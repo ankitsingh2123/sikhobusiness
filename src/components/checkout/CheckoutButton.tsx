@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import { load } from "@cashfreepayments/cashfree-js";
+import { createClient } from "@/utils/supabase/client";
+import { Button } from "@/components/ui/Button";
 
 export function CheckoutButton({ courseId, price, userId }: { courseId: string; price: number; userId?: string }) {
   const [loading, setLoading] = useState(false);
+  const supabase = createClient();
 
   const handlePayment = async () => {
     if (!userId) {
@@ -14,9 +17,13 @@ export function CheckoutButton({ courseId, price, userId }: { courseId: string; 
 
     try {
       setLoading(true);
+      const token = (await supabase.auth.getSession()).data.session?.access_token;
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` 
+        },
         body: JSON.stringify({ courseId }),
       });
 
@@ -42,12 +49,14 @@ export function CheckoutButton({ courseId, price, userId }: { courseId: string; 
   };
 
   return (
-    <button
+    <Button
       onClick={handlePayment}
-      disabled={loading}
-      className="w-full h-full bg-[#FF7A00] text-white py-3 md:py-4 rounded-xl md:rounded-2xl font-bold text-base md:text-lg shadow-lg hover:shadow-xl hover:bg-[#E56D00] transition-all transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+      isLoading={loading}
+      variant="primary"
+      size="lg"
+      className="w-full !py-3 md:!py-4"
     >
-      {loading ? "Processing..." : `Buy Now for ₹${price}`}
-    </button>
+      Buy Now for ₹{price}
+    </Button>
   );
 }

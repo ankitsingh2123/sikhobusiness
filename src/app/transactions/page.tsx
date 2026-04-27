@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { createClient } from "@/utils/supabase/client";
 
 const InvoiceModal = dynamic(() => import("@/components/invoice/InvoiceModal"), { ssr: false });
 
@@ -38,24 +39,36 @@ export default function TransactionsPage() {
   const [activeInvoice, setActiveInvoice] = useState<any | null>(null);
   const [invoiceLoading, setInvoiceLoading] = useState<string | null>(null);
   const [filter, setFilter] = useState<"ALL" | "SUCCESS" | "PENDING" | "FAILED">("ALL");
+  const supabase = createClient();
 
   useEffect(() => {
-    fetch("/api/purchases")
-      .then((r) => r.json())
-      .then((data) => {
+    const loadPurchases = async () => {
+      try {
+        const token = (await supabase.auth.getSession()).data.session?.access_token;
+        const res = await fetch("/api/purchases", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
         if (data.purchases) {
           setPurchases(data.purchases);
           setStats(data.stats);
         }
+      } catch (e) {
+        console.error(e);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+    loadPurchases();
   }, []);
 
   const handleDownloadInvoice = async (orderId: string) => {
     setInvoiceLoading(orderId);
     try {
-      const res = await fetch(`/api/invoice/${orderId}`);
+      const token = (await supabase.auth.getSession()).data.session?.access_token;
+      const res = await fetch(`/api/invoice/${orderId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       if (!res.ok) {
         const err = await res.json();
         alert(err.error || "Could not load invoice.");

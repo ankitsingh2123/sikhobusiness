@@ -6,6 +6,7 @@ import { Logo } from "../ui/Logo";
 import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import Image from "next/image";
+import { Button } from "@/components/ui/Button";
 
 type SearchResult = {
   id: string;
@@ -24,17 +25,40 @@ export function Header() {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  
+  const [userRole, setUserRole] = useState<"STUDENT" | "CREATOR" | "ADMIN">("STUDENT");
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
   const supabase = createClient();
   const searchRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
+  async function fetchRole(token: string) {
+    try {
+      const d = await fetch("/api/user/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      }).then(r => r.json());
+      // /me returns { user: {...}, pending: bool }
+      const role = d.user?.role ?? d.role ?? "STUDENT";
+      setUserRole(role);
+    } catch { /* silent */ }
+  }
+
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user ?? null);
+    // getSession reads from localStorage — instant, no network call
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsAuthLoading(false);
+      if (session?.access_token) fetchRole(session.access_token);
     });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user ?? null);
+      setIsAuthLoading(false);
+      if (session?.access_token) {
+        fetchRole(session.access_token);
+      } else {
+        setUserRole("STUDENT");
+      }
     });
     return () => subscription.unsubscribe();
   }, [supabase]);
@@ -131,7 +155,7 @@ export function Header() {
 
   return (
     <header
-      className="w-full h-16 sticky top-0 z-30 px-4 md:px-6"
+      className="fixed top-0 left-0 right-0 h-16 z-50 px-4 md:px-6"
       style={{
         backgroundColor: "rgba(19, 19, 19, 0.85)",
         backdropFilter: "blur(24px)",
@@ -174,18 +198,18 @@ export function Header() {
             </div>
 
             {/* Center: Desktop Search Bar */}
-            <div className="hidden sm:flex flex-1 max-w-xl mx-auto px-4" ref={searchRef}>
+            <div className="hidden sm:flex flex-1 max-w-xs md:max-w-md lg:max-w-xl mx-auto px-2 md:px-4" ref={searchRef}>
               <div className="w-full relative group">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-gray-500 group-focus-within:text-[#FF7A00] transition-colors">
                   search
                 </span>
                 <input
                   type="text"
-                  placeholder="Search courses, books, NCERT chapters..."
+                  placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => searchQuery.trim().length >= 2 && setShowDropdown(true)}
-                  className="w-full py-2 pl-10 pr-4 rounded-full text-sm outline-none transition-all duration-200"
+                  className="w-full py-2 pl-10 pr-4 rounded-full text-xs md:text-sm outline-none transition-all duration-200"
                   style={{
                     backgroundColor: "#201f1f",
                     border: "1px solid rgba(255,255,255,0.08)",
@@ -198,37 +222,42 @@ export function Header() {
             </div>
 
             {/* Right: Actions */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 pr-3 md:pr-0">
-              {/* Become Creator Button (Desktop/Tablet) */}
-              <Link 
-                href="/become-creator" 
-                className="hidden sm:flex items-center gap-1.5 px-3 md:px-4 py-1.5 rounded-full bg-gradient-to-r from-[#FF7A00]/10 to-[#FF7A00]/5 border border-[#FF7A00]/30 hover:border-[#FF7A00] transition-all text-[11px] md:text-sm font-bold text-[#FF7A00]"
-              >
-                <span className="material-symbols-outlined text-[16px] md:text-[18px]">campaign</span>
-                <span className="hidden md:inline">Become Creator</span>
-                <span className="md:hidden">Creator</span>
-              </Link>
+            <div className="flex items-center gap-0.5 sm:gap-2 shrink-0 pr-1 sm:pr-0">
+              {/* Become Creator Button */}
+              {userRole === "CREATOR" || userRole === "ADMIN" ? (
+                <Button
+                  href="/creator"
+                  variant="glass"
+                  size="sm"
+                  className="!px-1.5 sm:!px-3 !text-[#3CE36A] hover:!bg-[#3CE36A]/10 !border-[#3CE36A]/40 hover:!border-[#3CE36A]"
+                  leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">video_library</span>}
+                >
+                  <span className="hidden lg:inline">Creator Studio</span>
+                </Button>
+              ) : (
+                <Button
+                  href="/become-creator"
+                  variant="glass"
+                  size="sm"
+                  className="!px-1.5 sm:!px-3 !text-[#FF7A00] hover:!bg-[#FF7A00]/10 !border-[#FF7A00]/30 hover:!border-[#FF7A00]"
+                  leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">campaign</span>}
+                >
+                  <span className="hidden lg:inline">Become Creator</span>
+                </Button>
+              )}
 
-              {/* All Categories Button (Desktop/Tablet) */}
-              <Link 
+              {/* All Categories Button */}
+              <Button 
                 href="/courses" 
-                className="hidden sm:flex items-center gap-1.5 px-3 md:px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all text-[11px] md:text-sm font-medium text-white mr-1"
+                variant="outline"
+                size="sm"
+                className="mr-0 sm:mr-1 !px-1.5 sm:!px-3"
+                leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">grid_view</span>}
               >
-                <span className="material-symbols-outlined text-[16px] md:text-[18px]">grid_view</span>
-                <span className="hidden md:inline">All Categories</span>
-                <span className="md:hidden">Courses</span>
-              </Link>
+                <span className="hidden lg:inline">All Categories</span>
+              </Button>
 
-              {/* Mobile Become Creator Icon (Visible on mobile) */}
-              <Link 
-                href="/become-creator" 
-                className="sm:hidden p-1.5 rounded-lg text-[#FF7A00] hover:bg-[#FF7A00]/10 transition-all active:scale-90 flex items-center justify-center"
-                title="Become Creator"
-              >
-                <span className="material-symbols-outlined text-[20px]">campaign</span>
-              </Link>
-
-              {/* Mobile search Toggle */}
+              {/* Mobile search Toggle (Only for screen < sm) */}
               <button
                 onClick={() => setIsMobileSearchOpen(true)}
                 className="sm:hidden p-1.5 rounded-lg text-gray-400 hover:text-white transition-colors flex items-center justify-center"
@@ -240,18 +269,20 @@ export function Header() {
               {/* Cart */}
               <Link
                 href="/cart"
-                className="p-1.5 rounded-lg transition-all duration-200 hover:scale-105 text-gray-400 hover:text-white flex items-center justify-center"
+                className="p-1 sm:p-1.5 rounded-lg transition-all duration-200 hover:scale-105 text-gray-400 hover:text-white flex items-center justify-center"
                 aria-label="Cart"
               >
                 <span className="material-symbols-outlined text-[20px] sm:text-[24px]">shopping_cart</span>
               </Link>
 
-              {/* Auth */}
-              {user ? (
-                <div className="relative group ml-0.5" ref={profileRef}>
+              {/* Auth — skeleton while loading to prevent flash */}
+              {isAuthLoading ? (
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/10 animate-pulse ml-0 sm:ml-0.5" />
+              ) : user ? (
+                <div className="relative group ml-0 sm:ml-0.5" ref={profileRef}>
                   <button
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/10 hover:border-[#FF7A00] transition-colors flex-shrink-0 flex items-center justify-center"
+                    className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden border border-white/10 hover:border-[#FF7A00] transition-colors flex-shrink-0 flex items-center justify-center"
                     title={user.email || "Account"}
                   >
                     {user.user_metadata?.avatar_url ? (
@@ -282,6 +313,10 @@ export function Header() {
                       <span className="material-symbols-outlined text-[15px]">receipt_long</span>
                       Purchase History
                     </Link>
+                    <Link href="/cart" onClick={() => setShowProfileDropdown(false)} className="sm:hidden flex items-center gap-2.5 px-4 py-2 text-[#aaa] hover:text-white hover:bg-white/5 transition-colors text-xs">
+                      <span className="material-symbols-outlined text-[15px]">shopping_cart</span>
+                      My Cart
+                    </Link>
                     <div className="border-t border-white/5 mt-1 pt-1">
                       <button
                         onClick={() => {
@@ -297,13 +332,14 @@ export function Header() {
                   </div>
                 </div>
               ) : (
-                <Link
+                <Button
                   href="/auth/login"
-                  className="ml-1 px-2 py-1 rounded-full text-[10px] font-bold text-white flex-shrink-0"
-                  style={{ background: "#FF7A00" }}
+                  variant="primary"
+                  size="sm"
+                  className="ml-1 flex-shrink-0 !text-[11px]"
                 >
                   Login
-                </Link>
+                </Button>
               )}
             </div>
           </>

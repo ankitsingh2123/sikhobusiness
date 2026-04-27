@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 interface EditProfileModalProps {
   currentName: string;
@@ -42,8 +43,12 @@ export function EditProfileModal({ currentName, currentAvatar, currentAbout }: E
         formData.append("file", file);
       }
 
+      const supabase = createClient();
+      const token = (await supabase.auth.getSession()).data.session?.access_token;
+      
       const res = await fetch("/api/user/profile", {
         method: "PUT",
+        headers: { "Authorization": `Bearer ${token}` },
         body: formData,
       });
 
