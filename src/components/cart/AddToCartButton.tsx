@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { Button } from "@/components/ui/Button";
 
 export function AddToCartButton({ courseId }: { courseId: string }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,10 +12,14 @@ export function AddToCartButton({ courseId }: { courseId: string }) {
   const handleAddToCart = async () => {
     setIsLoading(true);
     try {
+      const supabase = createClient();
+      const token = (await supabase.auth.getSession()).data.session?.access_token;
+      
       const res = await fetch("/api/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ courseId }),
       });
@@ -36,19 +42,15 @@ export function AddToCartButton({ courseId }: { courseId: string }) {
   };
 
   return (
-    <button
+    <Button
       onClick={handleAddToCart}
-      disabled={isLoading}
-      className="bg-[#1A1A1A] hover:bg-[#2A2A2A] text-white border border-white/10 font-bold px-6 sm:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl transition-all text-sm md:text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex-shrink-0 w-full sm:w-auto h-full"
+      isLoading={isLoading}
+      variant="secondary"
+      size="lg"
+      className="whitespace-nowrap flex-shrink-0 w-full sm:w-auto h-full !py-3 md:!py-4"
+      leftIcon={<span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>}
     >
-      {isLoading ? (
-        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-      ) : (
-        <>
-          <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-          Add to Cart
-        </>
-      )}
-    </button>
+      Add to Cart
+    </Button>
   );
 }

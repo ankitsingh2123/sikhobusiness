@@ -29,6 +29,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "**.b-cdn.net",   // Bunny CDN thumbnails
+      },
+      {
+        protocol: "https",
+        hostname: "skills.sikhobusiness.com",  // Seekho Business skill images
+      },
     ],
   },
 
@@ -36,27 +44,39 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // ── SEO Headers ──
+  // ── Security Headers ──
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://127.0.0.1:5000/api/:path*",
+      }
+    ];
+  },
+
   async headers() {
     return [
+      // ── Global rules (all routes) ──
       {
         source: "/(.*)",
         headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-XSS-Protection",       value: "1; mode=block" },
+          { key: "Referrer-Policy",         value: "strict-origin-when-cross-origin" },
+          // Prevent YOUR pages from being embedded in foreign iframes
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+        ],
+      },
+      // ── Watch page: allow YouTube + Bunny.net iframes to render ──
+      {
+        source: "/watch/:path*",
+        headers: [
           {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
+            key: "Content-Security-Policy",
+            value: [
+              "frame-ancestors 'self'",
+              "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://*.mediadelivery.net https://*.bunny.net",
+            ].join("; "),
           },
         ],
       },

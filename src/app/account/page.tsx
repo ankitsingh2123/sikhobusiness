@@ -43,24 +43,29 @@ export default async function AccountPage() {
   // Certificates (assumed logic: 1 cert per purchased course that has progress)
   const certificates = Math.floor(coursesDone * 0.8) || 0;
   return (
-    <div className="min-h-screen bg-[#111111] px-3 sm:px-4 md:px-8 py-6 md:py-12 font-sans text-white overflow-x-hidden">
-      <div className="max-w-[1200px] lg:max-w-full mx-auto space-y-4 sm:space-y-6">
+    <div className="min-h-screen bg-[#0A0A0A] px-3 sm:px-4 md:px-8 py-6 md:py-12 font-sans text-white overflow-hidden relative">
+      {/* Ambient background glow */}
+      <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-[#FF7A00]/5 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-[#3CE36A]/5 blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="max-w-[1200px] lg:max-w-full mx-auto space-y-4 sm:space-y-6 relative z-10">
         
-        {/* ΓòÉΓòÉ Profile Header Card ΓòÉΓòÉ */}
-        <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 overflow-hidden shadow-sm">
+        {/* ── Profile Header Card ── */}
+        <div className="bg-[#111]/80 backdrop-blur-xl rounded-2xl md:rounded-[32px] border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative">
           {/* Top Banner Gradient */}
-          <div className="h-20 sm:h-28 md:h-[140px] w-full bg-gradient-to-r from-[#2A1E15] via-[#1A1512] to-[#1A1A1A] relative">
-            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[#FF7A00]/10 blur-[80px] -translate-y-1/2 -translate-x-1/4 pointer-events-none"></div>
+          <div className="h-24 sm:h-32 md:h-[160px] w-full bg-gradient-to-r from-[#FF7A00]/20 via-[#1A1A1A] to-[#0A0A0A] relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[#FF7A00]/20 blur-[100px] -translate-y-1/2 -translate-x-1/4 pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-50 z-0" />
           </div>
           
-          <div className="px-4 sm:px-6 md:px-12 pb-6 md:pb-10">
+          <div className="px-4 sm:px-6 md:px-12 pb-6 md:pb-10 relative z-10">
             {/* Avatar & Main Details Row */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 -mt-10 sm:-mt-12 md:-mt-[60px] relative z-10 mb-5 md:mb-8">
               
               <div className="flex items-end sm:items-end gap-4 md:gap-6">
                 {/* Avatar */}
-                <div className="relative flex-shrink-0">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-[130px] md:h-[130px] rounded-full border-[3px] md:border-4 border-[#1A1A1A] overflow-hidden bg-[#222]">
+                <div className="relative flex-shrink-0 group">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-[140px] md:h-[140px] rounded-full border-4 md:border-8 border-[#0A0A0A] overflow-hidden bg-[#222] shadow-[0_0_30px_rgba(0,0,0,0.8)] relative z-10 group-hover:scale-105 transition-transform duration-500">
                     <Image 
                       src={avatarUrl} 
                       alt={name} 
@@ -69,8 +74,8 @@ export default async function AccountPage() {
                     />
                   </div>
                   {/* Edit Pencil Badge */}
-                  <button className="absolute bottom-0 right-0 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 bg-[#2A2A2A] rounded-full flex items-center justify-center border-2 border-[#1A1A1A] hover:bg-[#333] transition-colors">
-                    <span className="material-symbols-outlined text-[10px] sm:text-[12px] md:text-[14px] text-[#CCC]">edit</span>
+                  <button className="absolute bottom-1 right-1 md:bottom-2 md:right-2 w-8 h-8 md:w-10 md:h-10 bg-[#FF7A00] rounded-full flex items-center justify-center border-2 md:border-[3px] border-[#0A0A0A] hover:bg-[#FF9A44] transition-all z-20 shadow-[0_4px_15px_rgba(255,122,0,0.5)] group-hover:scale-110">
+                    <span className="material-symbols-outlined text-[14px] md:text-[18px] text-[#3D1D00] font-black">edit</span>
                   </button>
                 </div>
 
@@ -102,11 +107,12 @@ export default async function AccountPage() {
           </div>
         </div>
 
-        {/* ΓòÉΓòÉ Bottom Grid ΓòÉΓòÉ */}
+        {/* ── Bottom Grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           
-          {/* ΓöÇΓöÇ Learning Overview (Spans 2 columns on desktop) ΓöÇΓöÇ */}
-          <div className="lg:col-span-2 bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 p-4 sm:p-6 md:p-8 shadow-sm">
+          {/* ── Learning Overview (Spans 2 columns on desktop) ── */}
+          <div className="lg:col-span-2 bg-[#111]/80 backdrop-blur-xl rounded-2xl md:rounded-[32px] border border-white/10 p-5 sm:p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.3)] relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#3CE36A]/5 blur-[40px] pointer-events-none" />
             
             <div className="flex items-center justify-between mb-5 md:mb-8">
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">Learning Overview</h2>
@@ -172,9 +178,10 @@ export default async function AccountPage() {
             </div>
           </div>
 
-          {/* ΓöÇΓöÇ Recent Badges ΓöÇΓöÇ */}
-          <div className="bg-[#1A1A1A] rounded-2xl md:rounded-[24px] border border-white/5 p-4 sm:p-6 md:p-8 shadow-sm flex flex-col">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight mb-5 md:mb-8">Recent Badges</h2>
+          {/* ── Recent Badges ── */}
+          <div className="bg-[#111]/80 backdrop-blur-xl rounded-2xl md:rounded-[32px] border border-white/10 p-5 sm:p-6 md:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.3)] flex flex-col relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-32 h-32 bg-[#8892FF]/5 blur-[40px] pointer-events-none" />
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight mb-5 md:mb-8 relative z-10">Recent Badges</h2>
             
             <div className="space-y-4 sm:space-y-5 md:space-y-6 flex-1">
               

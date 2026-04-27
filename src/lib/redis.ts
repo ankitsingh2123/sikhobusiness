@@ -1,34 +1,18 @@
-import { Redis } from '@upstash/redis'
+import { Redis } from "@upstash/redis";
 
-// Upstash Redis URL is rediss://default:TOKEN@HOST:PORT
-// @upstash/redis requires https://URL and TOKEN separately
+// No-op mock when Redis is not configured — prevents 22s connection timeouts
+const noopRedis = {
+  get: async () => null,
+  setex: async () => null,
+  set: async () => null,
+  del: async () => null,
+} as unknown as Redis;
 
-const parseRedisUrl = (url: string) => {
-  if (!url) return { url: '', token: '' };
-  try {
-    const withoutProtocol = url.replace('rediss://', '').replace('redis://', '');
-    if (!withoutProtocol.includes('@')) {
-       return { url: '', token: '' };
-    }
-    const [auth, rest] = withoutProtocol.split('@');
-    if (!auth || !rest) return { url: '', token: '' };
-    
-    const token = auth.includes(':') ? auth.split(':')[1] : auth;
-    const host = rest.includes(':') ? rest.split(':')[0] : rest;
-    
-    return {
-      url: `https://${host}`,
-      token: token
-    };
-  } catch (e) {
-    console.error('Error parsing REDIS_URL:', e);
-    return { url: '', token: '' };
-  }
-};
+const url   = process.env.UPSTASH_REDIS_REST_URL   || process.env.REDIS_URL   || "";
+const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.REDIS_TOKEN || "";
 
-const credentials = parseRedisUrl(process.env.REDIS_URL || '');
-
-export const redis = new Redis({
-  url: credentials.url,
-  token: credentials.token,
-})
+// Only initialize real Redis if both url and token are present
+export const redis: Redis =
+  url && token
+    ? new Redis({ url, token })
+    : noopRedis;

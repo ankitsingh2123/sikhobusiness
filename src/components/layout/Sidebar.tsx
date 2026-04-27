@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -21,19 +21,13 @@ export function Sidebar() {
     <>
       {/* Desktop Sidebar */}
       <aside
-        className="hidden md:flex w-20 h-screen border-r fixed left-0 top-0 bottom-0 z-40 flex-col items-center py-6"
+        className="hidden md:flex w-20 border-r fixed left-0 top-16 bottom-0 z-40 flex-col items-center py-6"
         style={{
           backgroundColor: "#131313",
           borderColor: "rgba(255,255,255,0.02)",
         }}
       >
-        {/* Logo */}
-        <Link href="/" className="mb-6 group">
-          <Logo showText={false} />
-        </Link>
 
-        {/* Divider */}
-        <div className="w-8 h-[1px] bg-white/5 mb-6" />
 
         {/* Navigation */}
         <nav className="flex-1 w-full flex flex-col items-center gap-6">

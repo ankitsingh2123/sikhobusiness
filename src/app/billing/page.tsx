@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
+import { createClient } from "@/utils/supabase/client";
+
 const CertificateModal = dynamic(
   () => import("@/components/certificate/CertificateModal"),
   { ssr: false }
@@ -29,16 +31,25 @@ export default function CertificatesPage() {
   const [loading, setLoading] = useState(true);
   const [activeCert, setActiveCert] = useState<CertData | null>(null);
   const [filter, setFilter] = useState<"ALL" | "EARNED" | "INPROGRESS">("ALL");
+  const supabase = createClient();
 
   useEffect(() => {
-    fetch("/api/certificates")
-      .then((r) => r.json())
-      .then((data) => {
+    const fetchCerts = async () => {
+      try {
+        const token = (await supabase.auth.getSession()).data.session?.access_token;
+        const res = await fetch("/api/certificates", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
         if (data.certificates) setCerts(data.certificates);
         if (data.userName) setUserName(data.userName);
+      } catch (e) {
+        console.error(e);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+    fetchCerts();
   }, []);
 
   const earned = certs.filter((c) => c.isEligible);

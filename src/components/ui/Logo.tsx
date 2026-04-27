@@ -18,12 +18,10 @@ export function Logo({ className = "", showText = true }: { className?: string; 
 
       {/* Brand Text */}
       {showText && (
-        <div className="flex flex-col -space-y-1">
-          <div className="flex items-center">
-            <span className="text-white font-black text-base md:text-2xl tracking-tight">Seekho</span>
-            <span className="text-[#FF7A00] font-black text-base md:text-2xl tracking-tight ml-1">Business</span>
-          </div>
-          <span className="hidden sm:block text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase">seekhobusiness.co.in</span>
+        <div className="flex flex-col -space-y-1 md:-space-y-2">
+          <span className="text-white font-black text-[11px] sm:text-base md:text-2xl tracking-tight leading-none">Seekho</span>
+          <span className="text-[#FF7A00] font-black text-[11px] sm:text-base md:text-2xl tracking-tight leading-none">Business</span>
+          <span className="hidden md:block text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-1">seekhobusiness.co.in</span>
         </div>
       )}
     </div>
