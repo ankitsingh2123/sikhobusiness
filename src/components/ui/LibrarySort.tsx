@@ -46,34 +46,34 @@ export function LibrarySort() {
     <div className="relative" ref={dropdownRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 p-1.5 px-3 rounded-full border border-gray-300 hover:bg-gray-100 transition-colors text-sm font-medium text-[#555]"
+        className="flex items-center gap-1 sm:gap-1.5 py-1 sm:py-1.5 px-2.5 sm:px-3 rounded-full border border-white/10 hover:border-[#FF7A00]/40 hover:bg-[#FF7A00]/5 transition-all duration-300 text-[12px] sm:text-sm font-bold text-white/80 hover:text-white"
       >
-        <span className="material-symbols-outlined text-[16px]">sort</span>
+        <span className="material-symbols-outlined text-[14px] sm:text-[16px]">sort</span>
         Sort
-        <span className="material-symbols-outlined text-[16px]">{isOpen ? "expand_less" : "expand_more"}</span>
+        <span className="material-symbols-outlined text-[14px] sm:text-[16px] transition-transform duration-300" style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}>expand_more</span>
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden py-1">
-          {options.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => handleSort(option.value)}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                currentSort === option.value 
-                  ? "bg-[#FF7A00]/10 text-[#FF7A00] font-bold" 
-                  : "text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <span className="material-symbols-outlined text-[16px]">{option.icon}</span>
-              {option.label}
-              {currentSort === option.value && (
-                <span className="material-symbols-outlined text-[16px] ml-auto">check</span>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+      <div 
+        className={`absolute right-0 top-full mt-2 w-44 sm:w-48 bg-[#111] border border-white/10 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] z-50 overflow-hidden py-1 transition-all duration-300 origin-top-right ${isOpen ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+      >
+        {options.map((option) => (
+          <button
+            key={option.value}
+            onClick={() => handleSort(option.value)}
+            className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-[12px] sm:text-sm transition-colors ${
+              currentSort === option.value 
+                ? "bg-[#FF7A00]/10 text-[#FF9A44] font-bold" 
+                : "text-white/70 hover:bg-white/5 hover:text-white font-medium"
+            }`}
+          >
+            <span className="material-symbols-outlined text-[14px] sm:text-[16px]">{option.icon}</span>
+            {option.label}
+            {currentSort === option.value && (
+              <span className="material-symbols-outlined text-[14px] sm:text-[16px] ml-auto text-[#FF9A44] font-black">check</span>
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

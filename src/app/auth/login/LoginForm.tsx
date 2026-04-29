@@ -70,7 +70,7 @@ export function LoginForm() {
   return (
     <div className="w-full">
       {message && (
-        <div className={`p-4 mb-6 rounded-lg text-sm font-medium ${message.type === 'error' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-green-500/10 text-green-500 border border-green-500/20'}`}>
+        <div className={`p-4 mb-6 rounded-none text-sm font-medium ${message.type === 'error' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-green-500/10 text-green-500 border border-green-500/20'}`}>
           {message.text}
         </div>
       )}
@@ -78,7 +78,7 @@ export function LoginForm() {
       <button 
         onClick={handleGoogleLogin}
         disabled={isGoogleLoading || isLoading}
-        className="w-full flex items-center justify-center gap-3 py-2.5 md:py-3 px-4 rounded-lg border border-white/10 bg-[#1A1A1A] hover:bg-white/[0.05] transition-colors text-white font-medium text-sm mb-4 md:mb-8 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 py-2.5 md:py-3 px-4 rounded-none border border-white/10 bg-[#1A1A1A] hover:bg-white/[0.05] transition-colors text-white font-medium text-sm mb-4 md:mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isGoogleLoading ? (
            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -93,7 +93,7 @@ export function LoginForm() {
         Log in with Google
       </button>
 
-      <div className="relative mb-4 md:mb-8 flex items-center">
+      <div className="relative mb-4 md:mb-6 flex items-center">
         <div className="flex-grow border-t border-white/10"></div>
         <span className="flex-shrink-0 mx-4 text-[#666] font-medium tracking-widest text-[10px] uppercase">
           or email
@@ -101,7 +101,7 @@ export function LoginForm() {
         <div className="flex-grow border-t border-white/10"></div>
       </div>
 
-      <form onSubmit={handleEmailLogin} className="space-y-4 md:space-y-6">
+      <form onSubmit={handleEmailLogin} className="space-y-4 md:space-y-5">
         {/* Email */}
         <div>
           <label
@@ -118,7 +118,7 @@ export function LoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
               required
-              className="w-full py-2.5 md:py-3.5 px-4 rounded-lg text-sm outline-none transition-all duration-200 bg-[#161616] border border-white/10 text-white focus:border-[#FF7A00] placeholder-[#555]"
+              className="w-full py-2.5 px-4 rounded-none text-sm outline-none transition-all duration-200 bg-[#161616] border border-white/10 text-white focus:border-[#FF7A00] placeholder-[#555]"
               autoComplete="email"
             />
           </div>
@@ -148,7 +148,7 @@ export function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full py-2.5 md:py-3.5 px-4 pr-12 rounded-lg text-sm outline-none transition-all duration-200 bg-[#161616] border border-white/10 text-white focus:border-[#FF7A00] tracking-[0.2em] placeholder-[#555]"
+              className="w-full py-2.5 px-4 pr-12 rounded-none text-sm outline-none transition-all duration-200 bg-[#161616] border border-white/10 text-white focus:border-[#FF7A00] tracking-[0.2em] placeholder-[#555]"
               autoComplete="current-password"
             />
             <button
@@ -168,7 +168,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isLoading || isGoogleLoading}
-          className="w-full bg-[#FF7A00] hover:bg-[#FF8A1F] text-[#3D1D00] font-bold text-[15px] py-3 md:py-4 px-6 rounded-lg border-none cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-[0_8px_20px_rgba(255,122,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed mt-2 group"
+          className="w-full bg-[#FF7A00] hover:bg-[#FF8A1F] text-[#3D1D00] font-bold text-[15px] py-3 px-6 rounded-none border-none cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-[0_8px_20px_rgba(255,122,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed mt-2 group"
         >
           {isLoading ? (
             <span className="flex items-center gap-2">

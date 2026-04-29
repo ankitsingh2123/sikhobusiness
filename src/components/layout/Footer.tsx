@@ -19,15 +19,15 @@ export function Footer() {
           {/* Row 1 (sm) / Left section (md+) */}
           <div className="flex flex-col md:flex-row md:items-start lg:items-center gap-3 md:gap-10">
 
-            {/* Brand */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <div
-                className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #FF7A00, #ff9a3c)" }}
-              >
-                <span className="text-white font-bold text-sm">S</span>
+            {/* Brand - Transparent Rectangular Logo */}
+            <div className="flex items-center flex-shrink-0">
+              <div className="w-24 h-8 sm:w-28 sm:h-10 flex items-center justify-center relative overflow-hidden shrink-0">
+                <img 
+                  src="/images/logo-rect.png" 
+                  alt="Seekho Business Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className="text-white font-semibold text-sm">Seekho Business</span>
             </div>
 
             {/* Divider — md+ only */}
@@ -46,8 +46,7 @@ export function Footer() {
                   { name: "Contact", href: "/contact" },
                 ].map((l) => (
                   <Link key={l.name} href={l.href}
-                    className="text-[12px] transition-colors hover:text-white whitespace-nowrap"
-                    style={{ color: "#555" }}>
+                    className="text-[12px] text-gray-500 hover:text-[#FF7A00] transition-all duration-300 whitespace-nowrap px-2.5 py-1 rounded-lg hover:bg-[#FF7A00]/10 hover:shadow-[0_0_12px_rgba(255,122,0,0.05)]">
                     {l.name}
                   </Link>
                 ))}
@@ -69,8 +68,7 @@ export function Footer() {
                   { name: "Refund Policy", href: "/terms#refunds" },
                 ].map((l) => (
                   <Link key={l.name} href={l.href}
-                    className="text-[12px] transition-colors hover:text-white whitespace-nowrap"
-                    style={{ color: "#555" }}>
+                    className="text-[12px] text-gray-500 hover:text-[#FF7A00] transition-all duration-300 whitespace-nowrap px-2.5 py-1 rounded-lg hover:bg-[#FF7A00]/10 hover:shadow-[0_0_12px_rgba(255,122,0,0.05)]">
                     {l.name}
                   </Link>
                 ))}

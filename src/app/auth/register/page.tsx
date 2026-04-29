@@ -18,8 +18,8 @@ export default function RegisterPage() {
       </div>
 
       {/* Main Card */}
-      <div className="w-full max-w-[1200px] bg-[#111]/80 backdrop-blur-2xl rounded-[32px] border border-white/10 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col md:flex-row relative z-10 max-h-[90vh]">
-        
+      <div className="w-full max-w-[1200px] bg-[#111]/80 backdrop-blur-2xl rounded-none border border-white/10 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col md:flex-row relative z-10 max-h-[90vh]">
+
         {/* Left Side: Branding & Features (Hidden on mobile) */}
         <div className="relative w-full md:w-[45%] lg:w-[40%] p-8 lg:p-12 flex-col justify-between hidden md:flex overflow-hidden group bg-[#161616]">
           {/* Animated Gradient Background */}
@@ -30,7 +30,7 @@ export default function RegisterPage() {
           <div className="relative z-10 h-full flex flex-col">
             {/* Logo */}
             <div className="flex items-center gap-2 mb-12">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF9A44] to-[#FF7A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,122,0,0.4)]">
+              <div className="w-8 h-8 rounded-none bg-gradient-to-br from-[#FF9A44] to-[#FF7A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,122,0,0.4)]">
                 <span className="material-symbols-outlined text-white text-[20px]">school</span>
               </div>
               <h1 className="text-white font-black text-2xl tracking-tight">
@@ -39,7 +39,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="flex-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] font-semibold uppercase tracking-widest mb-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-none bg-white/5 border border-white/10 text-white/80 text-[10px] font-semibold uppercase tracking-widest mb-4">
                 <span className="material-symbols-outlined text-[12px] text-[#FF7A00]">rocket_launch</span>
                 Accelerate Growth
               </div>
@@ -53,7 +53,7 @@ export default function RegisterPage() {
               {/* Features List */}
               <div className="space-y-6">
                 <div className="flex gap-4 group/feature">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover/feature:bg-[#FF7A00]/10 group-hover/feature:border-[#FF7A00]/30 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-none bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover/feature:bg-[#FF7A00]/10 group-hover/feature:border-[#FF7A00]/30 transition-all duration-300">
                     <span className="material-symbols-outlined text-gray-400 group-hover/feature:text-[#FF7A00] transition-colors text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>video_library</span>
                   </div>
                   <div>
@@ -63,7 +63,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="flex gap-4 group/feature">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover/feature:bg-[#FF7A00]/10 group-hover/feature:border-[#FF7A00]/30 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-none bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 group-hover/feature:bg-[#FF7A00]/10 group-hover/feature:border-[#FF7A00]/30 transition-all duration-300">
                     <span className="material-symbols-outlined text-gray-400 group-hover/feature:text-[#FF7A00] transition-colors text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
                   </div>
                   <div>
@@ -79,7 +79,7 @@ export default function RegisterPage() {
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#161616] bg-gray-800 flex items-center justify-center overflow-hidden">
+                    <div key={i} className="w-8 h-8 rounded-none border-2 border-[#161616] bg-gray-800 flex items-center justify-center overflow-hidden">
                       <Image src={`https://i.pravatar.cc/100?img=${i + 35}`} alt="User" width={32} height={32} />
                     </div>
                   ))}
@@ -93,18 +93,18 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Side: Form */}
-        <div className="flex-1 bg-[#111]/80 p-6 md:p-12 lg:p-16 flex flex-col justify-center items-center overflow-y-auto custom-scroll relative">
+        <div className="flex-1 bg-[#111]/80 p-5 md:p-10 lg:p-12 flex flex-col justify-center items-center overflow-y-auto custom-scroll relative">
           <div className="absolute inset-0 border-l border-white/5 pointer-events-none hidden md:block" />
-          
-          <div className="w-full max-w-[400px] relative z-10 py-4">
-            <div className="text-center md:text-left mb-8">
-              <h2 className="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">Create Account</h2>
+
+          <div className="w-full max-w-[400px] relative z-10 py-2">
+            <div className="text-center md:text-left mb-6">
+              <h2 className="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">Create Account</h2>
               <p className="text-[#888] text-sm">Start your learning journey today.</p>
             </div>
 
             <RegisterForm />
 
-            <div className="mt-8 pt-8 border-t border-white/5 text-center">
+            <div className="mt-6 pt-6 border-t border-white/5 text-center">
               <p className="text-[13px] text-gray-400">
                 Already have an account?{" "}
                 <Link href="/auth/login" className="text-[#FF7A00] font-bold hover:text-white transition-colors">
