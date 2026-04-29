@@ -246,16 +246,7 @@ export function Header() {
                 </Button>
               )}
 
-              {/* All Categories Button */}
-              <Button 
-                href="/courses" 
-                variant="outline"
-                size="sm"
-                className="mr-0 sm:mr-1 !px-1.5 sm:!px-3"
-                leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">grid_view</span>}
-              >
-                <span className="hidden lg:inline">All Categories</span>
-              </Button>
+
 
               {/* Mobile search Toggle (Only for screen < sm) */}
               <button

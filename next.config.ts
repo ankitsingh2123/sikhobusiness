@@ -31,7 +31,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**.b-cdn.net",   // Bunny CDN thumbnails
+        hostname: "vz-82a5778a-b1c.b-cdn.net",
+      },
+      {
+        protocol: "https",
+        hostname: "*.b-cdn.net",
       },
       {
         protocol: "https",
@@ -49,7 +53,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://127.0.0.1:5000/api/:path*",
+        destination: "http://127.0.0.1:5001/api/:path*",
       }
     ];
   },
