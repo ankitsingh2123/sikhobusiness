@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/Button";
+import { apiUrl } from "@/lib/api";
 
 type TabId = "overview" | "notes" | "resources";
 
@@ -56,7 +57,7 @@ export default function WatchPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/video/${videoId}`, {
+        const res = await fetch(apiUrl(`/api/video/${videoId}`), {
           headers: {
             "Authorization": `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
           }
