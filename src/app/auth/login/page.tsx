@@ -4,14 +4,14 @@ import { LoginForm } from "./LoginForm";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Login ΓÇö Access Your Courses | Seekho Business",
+  title: "Login - Access Your Courses | Seekho Business",
   description: "Sign in to your Seekho Business account to continue watching courses and track your learning progress.",
   robots: { index: false, follow: false },
 };
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-3 sm:p-6 md:p-8 relative overflow-hidden">
+    <div className="h-[calc(100dvh-8rem)] sm:min-h-screen bg-[#0A0A0A] flex items-center justify-center p-3 sm:p-6 md:p-8 relative overflow-hidden">
       {/* Ambient Glows */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#FF7A00]/10 blur-[120px] rounded-full mix-blend-screen animate-pulse" style={{ animationDuration: '6s' }} />
@@ -19,7 +19,7 @@ export default function LoginPage() {
       </div>
 
       {/* Main Card */}
-      <div className="w-full max-w-[1100px] bg-[#111]/80 backdrop-blur-2xl rounded-none border border-white/10 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col md:flex-row relative z-10 mb-16 md:mb-0">
+      <div className="w-full max-w-[1100px] bg-[#111]/80 backdrop-blur-2xl rounded-none border border-white/10 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.8)] flex flex-col md:flex-row relative z-10 md:mb-0">
         
         {/* Left Side: Branding/Image Panel */}
         <div className="relative w-full md:w-[45%] lg:w-[45%] p-4 md:p-12 lg:p-16 flex flex-col justify-center md:justify-between min-h-[80px] md:min-h-[600px] overflow-hidden group">
@@ -37,7 +37,11 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="relative z-10 flex items-center justify-center md:justify-start gap-2 mb-0">
             <div className="w-6 h-6 md:w-8 md:h-8 rounded-none bg-gradient-to-br from-[#FF9A44] to-[#FF7A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,122,0,0.4)]">
-              <span className="material-symbols-outlined text-white text-[14px] md:text-[20px]">school</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 md:w-5 md:h-5 text-white">
+                <path d="M22 10L12 5L2 10L12 15L22 10Z" />
+                <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" />
+                <line x1="21" y1="10" x2="21" y2="15" />
+              </svg>
             </div>
             <h1 className="text-white font-black text-lg md:text-2xl tracking-tight">
               Seekho <span className="text-[#FF7A00]">Business</span>

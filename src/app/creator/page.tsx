@@ -97,27 +97,27 @@ export default function CreatorDashboard() {
     <div className="min-h-screen bg-[#0A0A0A] text-white">
       {/* Header */}
       <div className="border-b border-white/5 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Link href="/" className="text-gray-500 hover:text-white transition-colors">
+            <Link href="/" className="text-gray-500 hover:text-white transition-colors shrink-0">
               <span className="material-symbols-outlined text-[20px]">arrow_back</span>
             </Link>
-            <div>
-              <h1 className="text-lg font-bold text-white">Creator Studio</h1>
-              <p className="text-[11px] text-gray-500">Manage your courses & content</p>
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg font-bold text-white truncate">Creator Studio</h1>
+              <p className="text-[10px] sm:text-[11px] text-gray-500 truncate">Manage your courses & content</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <Link
               href="/creator-onboarding"
-              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white text-[13px] font-bold px-4 py-2.5 rounded-xl border border-white/10 transition-colors"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white text-[12px] sm:text-[13px] font-bold px-3 sm:px-4 py-2.5 rounded-xl border border-white/10 transition-colors whitespace-nowrap"
             >
               <span className="material-symbols-outlined text-[18px]">manage_accounts</span>
               Edit Profile
             </Link>
             <button
               onClick={() => setShowCreate(true)}
-              className="flex items-center gap-2 bg-[#FF7A00] hover:bg-[#e06d00] text-white text-[13px] font-bold px-4 py-2.5 rounded-xl transition-colors shadow-[0_4px_15px_rgba(255,122,0,0.2)]"
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#FF7A00] hover:bg-[#e06d00] text-white text-[12px] sm:text-[13px] font-bold px-3 sm:px-4 py-2.5 rounded-xl transition-colors shadow-[0_4px_15px_rgba(255,122,0,0.2)] whitespace-nowrap"
             >
               <span className="material-symbols-outlined text-[18px]">add</span>
               New Project
