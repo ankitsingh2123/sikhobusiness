@@ -268,6 +268,27 @@ export function Header() {
 
 
 
+              {/* All Categories Button */}
+              <Button
+                href="/search"
+                variant="glass"
+                size="sm"
+                className="hidden sm:flex !px-3 !text-white hover:!bg-white/10 !border-white/10"
+                leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">grid_view</span>}
+              >
+                <span className="hidden xl:inline">All Categories</span>
+              </Button>
+
+              {/* Cart Icon */}
+              <Link
+                href="/cart"
+                className="hidden sm:flex p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all relative group"
+                aria-label="Shopping Cart"
+              >
+                <span className="material-symbols-outlined text-[22px] md:text-[24px]">shopping_cart</span>
+                {/* Optional: Cart badge can be added here if needed */}
+              </Link>
+
               {/* Mobile search Toggle (Only for screen < sm) */}
               <button
                 onClick={() => setIsMobileSearchOpen(true)}
