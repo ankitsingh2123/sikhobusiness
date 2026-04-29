@@ -184,21 +184,21 @@ export default function CreatorOnboardingPage() {
       
       <div className="max-w-[1200px] mx-auto relative z-10">
         {/* Compact Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <Link href="/become-creator" className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link href="/become-creator" className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all shrink-0">
               <span className="material-symbols-outlined text-[18px]">arrow_back</span>
             </Link>
-            <div>
-              <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-2xl font-black text-white flex flex-wrap items-center gap-2 truncate">
                 Creator Onboarding
-                <span className="text-[10px] bg-[#FF7A00]/10 text-[#FF7A00] px-2 py-0.5 rounded-md border border-[#FF7A00]/20 font-black uppercase shadow-[0_0_10px_rgba(255,122,0,0.2)]">Live</span>
+                <span className="text-[9px] sm:text-[10px] bg-[#FF7A00]/10 text-[#FF7A00] px-2 py-0.5 rounded-md border border-[#FF7A00]/20 font-black uppercase shadow-[0_0_10px_rgba(255,122,0,0.2)]">Live</span>
               </h1>
             </div>
           </div>
-          <div className="flex items-center gap-3 bg-[#111]/80 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center gap-3 bg-[#111]/80 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)] self-start sm:self-auto">
             <div className="text-[#3CE36A] font-black text-sm">93.0%</div>
-            <div className="text-gray-500 text-[8px] uppercase font-bold tracking-widest hidden sm:block">Payout Rate</div>
+            <div className="text-gray-500 text-[8px] uppercase font-bold tracking-widest hidden xs:block">Payout Rate</div>
           </div>
         </div>
 

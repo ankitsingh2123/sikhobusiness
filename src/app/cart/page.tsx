@@ -70,7 +70,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center p-6 text-center">
+      <div className="h-[calc(100dvh-4rem)] bg-[#07080F] flex flex-col items-center justify-center p-6 text-center overflow-hidden">
         <FadeIn direction="up" className="flex flex-col items-center">
           <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#161616] border border-white/5 flex items-center justify-center mb-6 sm:mb-8 shadow-[0_0_40px_rgba(255,122,0,0.05)]">
             <span className="material-symbols-outlined text-[36px] sm:text-[48px] text-[#444]">shopping_cart</span>

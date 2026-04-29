@@ -4,26 +4,38 @@ import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { EditProfileModal } from "@/components/account/EditProfileModal";
+import { redis } from "@/lib/redis";
 
 export default async function AccountPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
-  // Fetch real user data from Prisma
-  const dbUser = await prisma.user.findUnique({
-    where: { id: user.id },
-    include: {
-      purchases: true,
-      progress: true
-    }
-  });
+  // Check cache first for fast output (including image URLs)
+  const cacheKey = `cache:frontend:user:${user.id}`;
+  let dbUser: any = await redis.get(cacheKey);
 
   if (!dbUser) {
-    redirect("/login");
+    // Fetch real user data from Prisma
+    dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: {
+        purchases: true,
+        progress: true
+      }
+    });
+
+    if (dbUser) {
+      // Store in Redis as a JSON link for 5 minutes (300s)
+      await redis.setex(cacheKey, 300, dbUser);
+    }
+  }
+
+  if (!dbUser) {
+    redirect("/auth/login");
   }
 
   const name = dbUser.name || "Learner";

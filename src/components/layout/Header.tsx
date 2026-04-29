@@ -104,11 +104,14 @@ export function Header() {
   }, [searchQuery]);
 
   const SearchDropdown = () => (
-    <div className="absolute top-full left-0 right-0 mt-2 bg-[#1A1A1A] border border-white/10 rounded-xl overflow-hidden shadow-2xl shadow-black/50 z-50">
+    <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-[#1A1A1A] border border-white/5 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-50 animate-in fade-in zoom-in-95 duration-200">
       {isSearching ? (
-        <div className="p-4 text-center text-sm text-[#888]">Searching...</div>
+        <div className="p-8 text-center">
+          <div className="w-6 h-6 border-2 border-[#FF7A00] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+          <p className="text-[12px] text-gray-500 font-medium">Searching courses...</p>
+        </div>
       ) : searchResults.length > 0 ? (
-        <div className="max-h-[60vh] overflow-y-auto">
+        <div className="max-h-[65vh] overflow-y-auto custom-scrollbar">
           {searchResults.map((course) => (
             <Link 
               key={course.id} 
@@ -118,22 +121,24 @@ export function Header() {
                 setIsMobileSearchOpen(false);
                 setSearchQuery("");
               }}
-              className="flex items-center gap-3 p-3 hover:bg-[#222] transition-colors border-b border-white/5 last:border-0"
+              className="flex items-center gap-4 p-4 hover:bg-white/[0.03] active:bg-white/[0.06] transition-all border-b border-white/[0.03] last:border-0"
             >
-              <div className="w-12 h-12 rounded-lg bg-white/5 shrink-0 relative overflow-hidden">
+              <div className="w-14 h-14 rounded-xl bg-[#222] shrink-0 relative overflow-hidden shadow-inner">
                 {course.thumbnail ? (
                   <Image src={course.thumbnail} alt={course.title} fill className="object-cover" />
                 ) : (
-                  <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/20">video_library</span>
+                  <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/10 text-[20px]">video_library</span>
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-white truncate">{course.title}</p>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[10px] text-[#FF7A00] font-bold uppercase tracking-wider">{course.category}</span>
-                  <span className="text-[10px] text-[#888]">Γé╣{course.price}</span>
+                <p className="text-[14px] font-bold text-white truncate leading-tight mb-1">{course.title}</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-[#FF7A00] font-bold uppercase tracking-widest">{course.category}</span>
+                  <div className="w-1 h-1 rounded-full bg-white/10" />
+                  <span className="text-[10px] text-gray-500 font-bold">Γé╣{course.price}</span>
                 </div>
               </div>
+              <span className="material-symbols-outlined text-gray-700 text-[18px]">chevron_right</span>
             </Link>
           ))}
           <Link 
@@ -142,13 +147,17 @@ export function Header() {
               setShowDropdown(false);
               setIsMobileSearchOpen(false);
             }}
-            className="block w-full p-3 text-center text-sm font-bold text-[#FF7A00] hover:bg-[#222] transition-colors bg-[#111]"
+            className="flex items-center justify-center gap-2 w-full p-4 text-[13px] font-black text-[#FF7A00] hover:bg-[#FF7A00]/5 transition-colors bg-[#111] border-t border-white/5"
           >
-            See all results
+            See all {searchResults.length} results
+            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
           </Link>
         </div>
       ) : (
-        <div className="p-4 text-center text-sm text-[#888]">No courses found</div>
+        <div className="p-10 text-center">
+          <span className="material-symbols-outlined text-gray-700 text-[32px] mb-2">search_off</span>
+          <p className="text-[13px] text-gray-500 font-medium">No courses found for "{searchQuery}"</p>
+        </div>
       )}
     </div>
   );
@@ -167,24 +176,35 @@ export function Header() {
         
         {/* === Mobile Expanded Search View === */}
         {isMobileSearchOpen ? (
-          <div className="flex items-center w-full gap-2 sm:hidden animate-in fade-in slide-in-from-right-4 duration-200" ref={searchRef}>
+          <div className="absolute inset-0 flex items-center gap-3 px-2 sm:hidden animate-in fade-in slide-in-from-top-2 duration-300 z-[60] bg-[#131313]" ref={searchRef}>
             <button 
-              onClick={() => setIsMobileSearchOpen(false)}
-              className="p-1 rounded-full text-gray-400 hover:text-white transition-colors shrink-0"
+              onClick={() => {
+                setIsMobileSearchOpen(false);
+                setSearchQuery("");
+              }}
+              className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all shrink-0 active:scale-95"
             >
-              <span className="material-symbols-outlined text-[24px]">arrow_back</span>
+              <span className="material-symbols-outlined text-[22px]">arrow_back_ios_new</span>
             </button>
             <div className="flex-1 relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-gray-500">search</span>
+              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[18px] text-[#FF7A00]/70 group-focus-within:text-[#FF7A00]">search</span>
               <input
                 type="text"
                 autoFocus
-                placeholder="Search courses..."
+                placeholder="Search courses, skills..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchQuery.trim().length >= 2 && setShowDropdown(true)}
-                className="w-full py-2 pl-9 pr-4 rounded-full text-sm outline-none transition-all duration-200 bg-[#2A2A2A] text-white border border-white/10 focus:border-[#FF7A00]/50"
+                className="w-full py-2.5 pl-10 pr-10 rounded-xl text-[14px] outline-none transition-all duration-300 bg-[#1C1C1C] text-white border border-white/5 focus:border-[#FF7A00]/40 focus:ring-4 focus:ring-[#FF7A00]/5 placeholder:text-gray-600"
               />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-gray-500 hover:text-white transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              )}
               {showDropdown && <SearchDropdown />}
             </div>
           </div>
@@ -229,7 +249,7 @@ export function Header() {
                   href="/creator"
                   variant="glass"
                   size="sm"
-                  className="!px-1.5 sm:!px-3 !text-[#3CE36A] hover:!bg-[#3CE36A]/10 !border-[#3CE36A]/40 hover:!border-[#3CE36A]"
+                  className="!px-1.5 sm:!px-3 !text-[#3CE36A] hover:!bg-[#3CE36A]/10 !border-transparent"
                   leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">video_library</span>}
                 >
                   <span className="hidden lg:inline">Creator Studio</span>
@@ -239,7 +259,7 @@ export function Header() {
                   href="/become-creator"
                   variant="glass"
                   size="sm"
-                  className="!px-1.5 sm:!px-3 !text-[#FF7A00] hover:!bg-[#FF7A00]/10 !border-[#FF7A00]/30 hover:!border-[#FF7A00]"
+                  className="!px-1.5 sm:!px-3 !text-[#FF7A00] hover:!bg-[#FF7A00]/10 !border-transparent"
                   leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">campaign</span>}
                 >
                   <span className="hidden lg:inline">Become Creator</span>
@@ -257,14 +277,7 @@ export function Header() {
                 <span className="material-symbols-outlined text-[20px]">search</span>
               </button>
 
-              {/* Cart */}
-              <Link
-                href="/cart"
-                className="p-1 sm:p-1.5 rounded-lg transition-all duration-200 hover:scale-105 text-gray-400 hover:text-white flex items-center justify-center"
-                aria-label="Cart"
-              >
-                <span className="material-symbols-outlined text-[20px] sm:text-[24px]">shopping_cart</span>
-              </Link>
+
 
               {/* Auth — skeleton while loading to prevent flash */}
               {isAuthLoading ? (

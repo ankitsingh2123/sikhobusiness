@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden">
+    <div className="h-[calc(100dvh-8rem)] sm:min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4 sm:p-6 md:p-8 relative overflow-hidden">
       {/* Ambient Glows */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#FF7A00]/10 blur-[120px] rounded-full mix-blend-screen animate-pulse" style={{ animationDuration: '7s' }} />
@@ -31,7 +31,11 @@ export default function RegisterPage() {
             {/* Logo */}
             <div className="flex items-center gap-2 mb-12">
               <div className="w-8 h-8 rounded-none bg-gradient-to-br from-[#FF9A44] to-[#FF7A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,122,0,0.4)]">
-                <span className="material-symbols-outlined text-white text-[20px]">school</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-white">
+                  <path d="M22 10L12 5L2 10L12 15L22 10Z" />
+                  <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5" />
+                  <line x1="21" y1="10" x2="21" y2="15" />
+                </svg>
               </div>
               <h1 className="text-white font-black text-2xl tracking-tight">
                 Seekho <span className="text-[#FF7A00]">Business</span>
