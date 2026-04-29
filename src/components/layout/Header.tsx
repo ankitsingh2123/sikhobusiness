@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import { apiUrl } from "@/lib/api";
 
 type SearchResult = {
   id: string;
@@ -34,7 +35,7 @@ export function Header() {
 
   async function fetchRole(token: string) {
     try {
-      const d = await fetch("/api/user/me", {
+      const d = await fetch(apiUrl("/api/user/me"), {
         headers: { Authorization: `Bearer ${token}` },
       }).then(r => r.json());
       // /me returns { user: {...}, pending: bool }
@@ -83,7 +84,7 @@ export function Header() {
       if (searchQuery.trim().length >= 2) {
         setIsSearching(true);
         try {
-          const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+          const res = await fetch(apiUrl(`/api/search?q=${encodeURIComponent(searchQuery)}`));
           if (res.ok) {
             const data = await res.json();
             setSearchResults(data.courses || []);
@@ -267,6 +268,27 @@ export function Header() {
               )}
 
 
+
+              {/* All Categories Button */}
+              <Button
+                href="/search"
+                variant="glass"
+                size="sm"
+                className="hidden sm:flex !px-3 !text-white hover:!bg-white/10 !border-white/10"
+                leftIcon={<span className="material-symbols-outlined text-[18px] md:text-[20px]">grid_view</span>}
+              >
+                <span className="hidden xl:inline">All Categories</span>
+              </Button>
+
+              {/* Cart Icon */}
+              <Link
+                href="/cart"
+                className="hidden sm:flex p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all relative group"
+                aria-label="Shopping Cart"
+              >
+                <span className="material-symbols-outlined text-[22px] md:text-[24px]">shopping_cart</span>
+                {/* Optional: Cart badge can be added here if needed */}
+              </Link>
 
               {/* Mobile search Toggle (Only for screen < sm) */}
               <button

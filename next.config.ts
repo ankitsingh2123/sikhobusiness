@@ -50,10 +50,11 @@ const nextConfig: NextConfig = {
 
   // ── Security Headers ──
   async rewrites() {
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:5001";
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:5001/api/:path*",
+        destination: `${backendUrl}/api/:path*`,
       }
     ];
   },
