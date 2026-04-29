@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { apiUrl } from "@/lib/api";
 
 interface Course {
   id: string; title: string; description: string;
@@ -121,7 +122,7 @@ function SearchInner() {
       if (p !== "all") params.set("price", p);
       if (s !== "newest") params.set("sort", s);
       if (page > 1) params.set("page", String(page));
-      const res = await fetch(`/api/search?${params}`);
+      const res = await fetch(apiUrl(`/api/search?${params}`));
       if (!res.ok) throw new Error("Failed to fetch");
       setData(await res.json());
     } catch (e) {

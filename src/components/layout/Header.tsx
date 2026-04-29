@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import { apiUrl } from "@/lib/api";
 
 type SearchResult = {
   id: string;
@@ -34,7 +35,7 @@ export function Header() {
 
   async function fetchRole(token: string) {
     try {
-      const d = await fetch("/api/user/me", {
+      const d = await fetch(apiUrl("/api/user/me"), {
         headers: { Authorization: `Bearer ${token}` },
       }).then(r => r.json());
       // /me returns { user: {...}, pending: bool }
@@ -83,7 +84,7 @@ export function Header() {
       if (searchQuery.trim().length >= 2) {
         setIsSearching(true);
         try {
-          const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+          const res = await fetch(apiUrl(`/api/search?q=${encodeURIComponent(searchQuery)}`));
           if (res.ok) {
             const data = await res.json();
             setSearchResults(data.courses || []);
